@@ -1,0 +1,451 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="{% static 'assets/logo.ico'%}" type="image/ico" sizes="32x32">
+    <title>Gamnest | Play</title>
+    <!-- Css Links -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body id="sidebar">
+    <!-- header -->
+    <header class="header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <nav class="navbar navbar-expand-md headerNav">
+                        <div class="container-fluid">
+                            <div class="position-relative">
+                                <input type="text" placeholder="Search" class="searchField">
+                                <div class="searchIcon">
+                                    <img src="{% static 'assets/serach.png'%}" alt="search-icon" />
+                                </div>
+                            </div>
+                            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
+                                aria-label="Toggle navigation">
+                                <i class="fas fa-bars" style="color: #fff;"></i>
+                            </button>
+                            <div class="collapse navbar-collapse " id="navbarNav">
+                                <ul class="navbar-nav ms-auto align-items-md-center align-items-end">
+                                    <li class="nav-item">
+                                        <div class="dropdown-center">
+                                            <button class="notiBell" type="button">
+                                                <span class="d-inline-block position-relative">
+                                                    <img src="{% static 'assets/ic_bell.png'%}" />
+                                                    <span class="notiBadge"></span>
+                                                </span>
+                                            </button>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Side bar -->
+    <!-- Uncollapse Sidebar -->
+
+    <section class="sidebar">
+        <div id="collapse-menu" style="display: none" class="d-flex">
+
+            <div class="sideNav marginTopAll">
+                <ul class="mb-lg-5">
+                    <li style="margin-bottom:30px;margin-left: -10px;">
+                        <a href="{% url 'index' %}">
+                            <img src="{%  static 'assets/brand-logo.png' %}" />
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'index' %}" class="active">
+                            <svg class="svgNavIcon" width="28" height="28" viewBox="0 0 28 28" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M7.38 4.67509C7.19004 4.56424 6.97418 4.50548 6.75424 4.50473C6.5343 4.50398 6.31806 4.56128 6.12734 4.67084C5.93663 4.7804 5.7782 4.93834 5.66805 5.12871C5.5579 5.31909 5.49993 5.53515 5.5 5.75509V22.2431C5.50011 22.463 5.55821 22.6789 5.66843 22.8691C5.77865 23.0594 5.93709 23.2172 6.12778 23.3266C6.31846 23.436 6.53464 23.4932 6.75449 23.4925C6.97435 23.4917 7.19011 23.4329 7.38 23.3221L22.078 14.7321C22.206 14.6571 22.3121 14.55 22.3859 14.4213C22.4597 14.2927 22.4985 14.1469 22.4985 13.9986C22.4985 13.8503 22.4597 13.7045 22.3859 13.5759C22.3121 13.4472 22.206 13.34 22.078 13.2651L7.38 4.67509ZM4 5.75509C4 3.63109 6.304 2.30809 8.138 3.38009L22.835 11.9701C24.387 12.8771 24.387 15.1201 22.835 16.0271L8.138 24.6171C6.304 25.6891 4 24.3671 4 22.2431V5.75509Z"
+                                    fill="#FEF7E6" />
+                            </svg>
+
+
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="{% url 'games' %}">
+                            <svg class="svgNavIcon2" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M10.0695 12.46L7.01953 15.51" stroke-width="1.5" stroke-miterlimit="10"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+                                <path d="M7.0498 12.49L10.0998 15.54" stroke-width="1.5" stroke-miterlimit="10"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+                                <path d="M14.0303 14H14.0403" stroke-width="2" stroke-miterlimit="10"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+                                <path d="M17.9697 14H17.9797" stroke-width="2" stroke-miterlimit="10"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+                                <path d="M16 15.98V15.96" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                                <path d="M16 12.04V12.02" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                                <path
+                                    d="M9.5 22H15.5C20.5 22 22.5 20 22.5 15V13C22.5 8 20.5 6 15.5 6H9.5C4.5 6 2.5 8 2.5 13V15C2.5 20 4.5 22 9.5 22Z"
+                                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                <path
+                                    d="M13.5105 2L13.5005 3.01C13.4905 3.56 13.0505 4 12.5005 4H12.4705C11.9205 4 11.4805 4.45 11.4805 5C11.4805 5.55 11.9305 6 12.4805 6H13.4805"
+                                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a href="{% url  'room' %}">
+                            <svg class="svgNavIcon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M12 12C13.1935 12 14.3381 11.5259 15.182 10.682C16.0259 9.83807 16.5 8.69347 16.5 7.5C16.5 6.30653 16.0259 5.16193 15.182 4.31802C14.3381 3.47411 13.1935 3 12 3C10.8065 3 9.66193 3.47411 8.81802 4.31802C7.97411 5.16193 7.5 6.30653 7.5 7.5C7.5 8.69347 7.97411 9.83807 8.81802 10.682C9.66193 11.5259 10.8065 12 12 12ZM12 13.5C10.4087 13.5 8.88258 12.8679 7.75736 11.7426C6.63214 10.6174 6 9.0913 6 7.5C6 5.9087 6.63214 4.38258 7.75736 3.25736C8.88258 2.13214 10.4087 1.5 12 1.5C13.5913 1.5 15.1174 2.13214 16.2426 3.25736C17.3679 4.38258 18 5.9087 18 7.5C18 9.0913 17.3679 10.6174 16.2426 11.7426C15.1174 12.8679 13.5913 13.5 12 13.5Z" />
+                                <path
+                                    d="M12 12C12.1989 12 12.3897 12.079 12.5303 12.2197C12.671 12.3603 12.75 12.5511 12.75 12.75V18.75C12.75 18.9489 12.671 19.1397 12.5303 19.2803C12.3897 19.421 12.1989 19.5 12 19.5C11.8011 19.5 11.6103 19.421 11.4697 19.2803C11.329 19.1397 11.25 18.9489 11.25 18.75V12.75C11.25 12.5511 11.329 12.3603 11.4697 12.2197C11.6103 12.079 11.8011 12 12 12Z" />
+                                <path
+                                    d="M9 15.213V16.7355C6.3225 17.1645 4.5 18.0915 4.5 18.75C4.5 19.6335 7.779 21 12 21C16.221 21 19.5 19.6335 19.5 18.75C19.5 18.09 17.6775 17.1645 15 16.7355V15.213C18.495 15.7275 21 17.118 21 18.75C21 20.82 16.971 22.5 12 22.5C7.029 22.5 3 20.82 3 18.75C3 17.1165 5.505 15.7275 9 15.213Z" />
+                            </svg>
+
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="{% url 'headset' %}">
+                            <svg class="svgNavIcon" width="28" height="28" viewBox="0 0 28 28" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <g clip-path="url(#clip0_5352_8424)">
+                                    <path
+                                        d="M3.79867 8.9862C3.71254 9.21468 3.71939 9.46782 3.81774 9.69131C3.91608 9.91481 4.0981 10.0909 4.32474 10.1817C4.55139 10.2726 4.80461 10.271 5.0301 10.1773C5.25559 10.0836 5.43539 9.90531 5.53093 9.6806L3.79867 8.9862ZM22.4653 9.6806C22.5091 9.79682 22.5757 9.90312 22.6611 9.99329C22.7465 10.0835 22.8491 10.1557 22.9628 10.2057C23.0764 10.2557 23.199 10.2825 23.3231 10.2846C23.4473 10.2867 23.5707 10.2639 23.686 10.2177C23.8012 10.1715 23.9061 10.1028 23.9945 10.0155C24.0829 9.92821 24.1529 9.82418 24.2006 9.70949C24.2482 9.59479 24.2725 9.47174 24.272 9.34754C24.2715 9.22334 24.2462 9.1005 24.1976 8.9862L22.4653 9.6806ZM26.1315 10.9499V17.1921H27.9981V10.9481L26.1315 10.9499ZM20.9253 22.4001H19.9136V24.2667H20.9253V22.4001ZM8.0864 22.4001H7.07467V24.2667H8.0864V22.4001ZM1.86667 17.1921V10.9481H0V17.1921H1.86667ZM1.84427 10.9761C9.78907 8.7057 18.2109 8.7057 26.1557 10.9761L26.6672 9.1822C18.3881 6.81659 9.61193 6.81659 1.3328 9.1822L1.84427 10.9761ZM7.07467 22.4001C5.69342 22.4001 4.36874 21.8514 3.39205 20.8747C2.41536 19.898 1.86667 18.5733 1.86667 17.1921H0C0 19.0684 0.745365 20.8679 2.07212 22.1946C3.39888 23.5214 5.19835 24.2667 7.07467 24.2667V22.4001ZM7.73173 22.611C7.76698 22.5477 7.81836 22.4948 7.88065 22.4578C7.94294 22.4207 8.01393 22.4008 8.0864 22.4001V24.2667C8.34896 24.2672 8.60677 24.1967 8.83253 24.0626C9.05828 23.9285 9.24544 23.7359 9.37067 23.5051L7.73173 22.611ZM9.37067 23.5051C11.3699 19.8409 16.6301 19.8409 18.6312 23.5051L20.2683 22.611C17.5616 17.6494 10.4365 17.6494 7.73173 22.611L9.37067 23.5051ZM19.9136 22.4001C20.0629 22.4001 20.1973 22.4803 20.2683 22.611L18.6312 23.5051C18.7564 23.7359 18.9417 23.9285 19.1675 24.0626C19.3932 24.1967 19.651 24.2672 19.9136 24.2667V22.4001ZM26.1333 17.1921C26.1333 18.5733 25.5846 19.898 24.6079 20.8747C23.6313 21.8514 22.3066 22.4001 20.9253 22.4001V24.2667C22.8017 24.2667 24.6011 23.5214 25.9279 22.1946C27.2546 20.8679 28 19.0684 28 17.1921H26.1333ZM28 10.9481C27.9999 10.5489 27.8698 10.1606 27.6293 9.84196C27.3888 9.52334 27.0511 9.29173 26.6672 9.1822L26.1557 10.9761C26.15 10.9737 26.1449 10.9698 26.141 10.9649C26.137 10.96 26.1344 10.9542 26.1333 10.9481H28ZM1.86667 10.9481C1.86558 10.9542 1.86296 10.96 1.85905 10.9649C1.85513 10.9698 1.85005 10.9737 1.84427 10.9761L1.3328 9.1822C0.949239 9.29165 0.611728 9.52484 0.371276 9.84308C0.130824 10.1613 0.000499702 10.5492 0 10.9481H1.86667ZM4.7264 6.6678L3.79867 8.9862L5.53093 9.6806L6.46053 7.36033L4.7264 6.6678ZM21.5395 7.35847L22.4672 9.6806L24.1976 8.9862L23.2717 6.6678L21.5395 7.35847ZM9.0608 5.60007H18.9392V3.7334H9.0608V5.60007ZM23.2717 6.6678C22.9255 5.80172 22.3277 5.05927 21.5554 4.53622C20.7832 4.01317 19.8719 3.73354 18.9392 3.7334V5.60007C19.4989 5.59997 20.0458 5.76763 20.5093 6.08139C20.9728 6.39516 21.3316 6.84064 21.5395 7.36033L23.2717 6.6678ZM6.46053 7.35847C6.66867 6.83912 7.02762 6.39404 7.49109 6.08062C7.95456 5.7672 8.5013 5.59982 9.0608 5.60007V3.7334C8.12809 3.73354 7.21681 4.01317 6.44455 4.53622C5.6723 5.05927 5.07262 5.80172 4.7264 6.6678L6.46053 7.35847Z"
+                                        fill="#636466" />
+                                </g>
+                                <defs>
+                                    <clipPath id="clip0_5352_8424">
+                                        <rect width="28" height="28" fill="white" />
+                                    </clipPath>
+                                </defs>
+                            </svg>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="{% url  'support' %}">
+                            <svg class="svgNavIcon" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M12.5 2C6.986 2 2.5 6.486 2.5 12V16.143C2.5 17.167 3.397 18 4.5 18H5.5C5.76522 18 6.01957 17.8946 6.20711 17.7071C6.39464 17.5196 6.5 17.2652 6.5 17V11.857C6.5 11.5918 6.39464 11.3374 6.20711 11.1499C6.01957 10.9624 5.76522 10.857 5.5 10.857H4.592C5.148 6.987 8.478 4 12.5 4C16.522 4 19.852 6.987 20.408 10.857H19.5C19.2348 10.857 18.9804 10.9624 18.7929 11.1499C18.6054 11.3374 18.5 11.5918 18.5 11.857V18C18.5 19.103 17.603 20 16.5 20H14.5V19H10.5V22H16.5C18.706 22 20.5 20.206 20.5 18C21.603 18 22.5 17.167 22.5 16.143V12C22.5 6.486 18.014 2 12.5 2Z" />
+                            </svg>
+
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <svg class="svgNavIcon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M11.9998 8C13.0607 8 14.0781 8.42143 14.8283 9.17157C15.5784 9.92172 15.9998 10.9391 15.9998 12C15.9998 13.0609 15.5784 14.0783 14.8283 14.8284C14.0781 15.5786 13.0607 16 11.9998 16C10.939 16 9.92156 15.5786 9.17141 14.8284C8.42127 14.0783 7.99984 13.0609 7.99984 12C7.99984 10.9391 8.42127 9.92172 9.17141 9.17157C9.92156 8.42143 10.939 8 11.9998 8ZM11.9998 10C11.4694 10 10.9607 10.2107 10.5856 10.5858C10.2106 10.9609 9.99984 11.4696 9.99984 12C9.99984 12.5304 10.2106 13.0391 10.5856 13.4142C10.9607 13.7893 11.4694 14 11.9998 14C12.5303 14 13.039 13.7893 13.4141 13.4142C13.7891 13.0391 13.9998 12.5304 13.9998 12C13.9998 11.4696 13.7891 10.9609 13.4141 10.5858C13.039 10.2107 12.5303 10 11.9998 10ZM9.99984 22C9.74984 22 9.53984 21.82 9.49984 21.58L9.12984 18.93C8.49984 18.68 7.95984 18.34 7.43984 17.94L4.94984 18.95C4.72984 19.03 4.45984 18.95 4.33984 18.73L2.33984 15.27C2.20984 15.05 2.26984 14.78 2.45984 14.63L4.56984 12.97L4.49984 12L4.56984 11L2.45984 9.37C2.26984 9.22 2.20984 8.95 2.33984 8.73L4.33984 5.27C4.45984 5.05 4.72984 4.96 4.94984 5.05L7.43984 6.05C7.95984 5.66 8.49984 5.32 9.12984 5.07L9.49984 2.42C9.53984 2.18 9.74984 2 9.99984 2H13.9998C14.2498 2 14.4598 2.18 14.4998 2.42L14.8698 5.07C15.4998 5.32 16.0398 5.66 16.5598 6.05L19.0498 5.05C19.2698 4.96 19.5398 5.05 19.6598 5.27L21.6598 8.73C21.7898 8.95 21.7298 9.22 21.5398 9.37L19.4298 11L19.4998 12L19.4298 13L21.5398 14.63C21.7298 14.78 21.7898 15.05 21.6598 15.27L19.6598 18.73C19.5398 18.95 19.2698 19.04 19.0498 18.95L16.5598 17.95C16.0398 18.34 15.4998 18.68 14.8698 18.93L14.4998 21.58C14.4598 21.82 14.2498 22 13.9998 22H9.99984ZM11.2498 4L10.8798 6.61C9.67984 6.86 8.61984 7.5 7.84984 8.39L5.43984 7.35L4.68984 8.65L6.79984 10.2C6.39984 11.37 6.39984 12.64 6.79984 13.8L4.67984 15.36L5.42984 16.66L7.85984 15.62C8.62984 16.5 9.67984 17.14 10.8698 17.38L11.2398 20H12.7598L13.1298 17.39C14.3198 17.14 15.3698 16.5 16.1398 15.62L18.5698 16.66L19.3198 15.36L17.1998 13.81C17.5998 12.64 17.5998 11.37 17.1998 10.2L19.3098 8.65L18.5598 7.35L16.1498 8.39C15.3798 7.5 14.3198 6.86 13.1198 6.62L12.7498 4H11.2498Z" />
+                            </svg>
+
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <ul class="collapse-ul">
+
+                <li class="mt-5" id="uncollapseli">
+                    <span class="collapseBtn">
+                        <svg class="svgNavIcon" width="22" height="24" viewBox="0 0 22 24" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M15.6667 17.8333V14.3333H7.5V9.66658H15.6667V6.16658L21.5 11.9999L15.6667 17.8333ZM13.3333 0.333252C13.9522 0.333252 14.5457 0.579084 14.9832 1.01667C15.4208 1.45425 15.6667 2.04775 15.6667 2.66659V4.99992H13.3333V2.66659H2.83333V21.3333H13.3333V18.9999H15.6667V21.3333C15.6667 21.9521 15.4208 22.5456 14.9832 22.9832C14.5457 23.4208 13.9522 23.6666 13.3333 23.6666H2.83333C2.21449 23.6666 1.621 23.4208 1.18342 22.9832C0.745833 22.5456 0.5 21.9521 0.5 21.3333V2.66659C0.5 2.04775 0.745833 1.45425 1.18342 1.01667C1.621 0.579084 2.21449 0.333252 2.83333 0.333252H13.3333Z"
+                                fill="#797A7C" />
+                        </svg>
+                    </span>
+                </li>
+
+
+            </ul>
+        </div>
+
+        <!-- Collapse Sidebar -->
+
+        <div id="uncollapse-menu" style="display: none">
+
+            <div class="sideNav marginTopAll">
+                <ul class="mb-lg-5">
+                    <li style="margin-bottom:30px;margin-left: -10px;">
+                        <a href="{% url 'index' %}">
+                            <img src="{% static 'assets/Group.png' %}" />
+                        </a>
+                    </li>
+                    <li>
+                        <a href="index.html" class="active">
+                            <svg class="svgNavIcon" width="28" height="28" viewBox="0 0 28 28" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M7.38 4.67509C7.19004 4.56424 6.97418 4.50548 6.75424 4.50473C6.5343 4.50398 6.31806 4.56128 6.12734 4.67084C5.93663 4.7804 5.7782 4.93834 5.66805 5.12871C5.5579 5.31909 5.49993 5.53515 5.5 5.75509V22.2431C5.50011 22.463 5.55821 22.6789 5.66843 22.8691C5.77865 23.0594 5.93709 23.2172 6.12778 23.3266C6.31846 23.436 6.53464 23.4932 6.75449 23.4925C6.97435 23.4917 7.19011 23.4329 7.38 23.3221L22.078 14.7321C22.206 14.6571 22.3121 14.55 22.3859 14.4213C22.4597 14.2927 22.4985 14.1469 22.4985 13.9986C22.4985 13.8503 22.4597 13.7045 22.3859 13.5759C22.3121 13.4472 22.206 13.34 22.078 13.2651L7.38 4.67509ZM4 5.75509C4 3.63109 6.304 2.30809 8.138 3.38009L22.835 11.9701C24.387 12.8771 24.387 15.1201 22.835 16.0271L8.138 24.6171C6.304 25.6891 4 24.3671 4 22.2431V5.75509Z"
+                                    fill="#FEF7E6" />
+                            </svg>
+
+                            Start a Session
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="{% url 'games' %}">
+                            <svg class="svgNavIcon2" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M10.0695 12.46L7.01953 15.51" stroke-width="1.5" stroke-miterlimit="10"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+                                <path d="M7.0498 12.49L10.0998 15.54" stroke-width="1.5" stroke-miterlimit="10"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+                                <path d="M14.0303 14H14.0403" stroke-width="2" stroke-miterlimit="10"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+                                <path d="M17.9697 14H17.9797" stroke-width="2" stroke-miterlimit="10"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+                                <path d="M16 15.98V15.96" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                                <path d="M16 12.04V12.02" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                                <path
+                                    d="M9.5 22H15.5C20.5 22 22.5 20 22.5 15V13C22.5 8 20.5 6 15.5 6H9.5C4.5 6 2.5 8 2.5 13V15C2.5 20 4.5 22 9.5 22Z"
+                                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                <path
+                                    d="M13.5105 2L13.5005 3.01C13.4905 3.56 13.0505 4 12.5005 4H12.4705C11.9205 4 11.4805 4.45 11.4805 5C11.4805 5.55 11.9305 6 12.4805 6H13.4805"
+                                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                            Games
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a href="{% url  'room' %}">
+                            <svg class="svgNavIcon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M12 12C13.1935 12 14.3381 11.5259 15.182 10.682C16.0259 9.83807 16.5 8.69347 16.5 7.5C16.5 6.30653 16.0259 5.16193 15.182 4.31802C14.3381 3.47411 13.1935 3 12 3C10.8065 3 9.66193 3.47411 8.81802 4.31802C7.97411 5.16193 7.5 6.30653 7.5 7.5C7.5 8.69347 7.97411 9.83807 8.81802 10.682C9.66193 11.5259 10.8065 12 12 12ZM12 13.5C10.4087 13.5 8.88258 12.8679 7.75736 11.7426C6.63214 10.6174 6 9.0913 6 7.5C6 5.9087 6.63214 4.38258 7.75736 3.25736C8.88258 2.13214 10.4087 1.5 12 1.5C13.5913 1.5 15.1174 2.13214 16.2426 3.25736C17.3679 4.38258 18 5.9087 18 7.5C18 9.0913 17.3679 10.6174 16.2426 11.7426C15.1174 12.8679 13.5913 13.5 12 13.5Z" />
+                                <path
+                                    d="M12 12C12.1989 12 12.3897 12.079 12.5303 12.2197C12.671 12.3603 12.75 12.5511 12.75 12.75V18.75C12.75 18.9489 12.671 19.1397 12.5303 19.2803C12.3897 19.421 12.1989 19.5 12 19.5C11.8011 19.5 11.6103 19.421 11.4697 19.2803C11.329 19.1397 11.25 18.9489 11.25 18.75V12.75C11.25 12.5511 11.329 12.3603 11.4697 12.2197C11.6103 12.079 11.8011 12 12 12Z" />
+                                <path
+                                    d="M9 15.213V16.7355C6.3225 17.1645 4.5 18.0915 4.5 18.75C4.5 19.6335 7.779 21 12 21C16.221 21 19.5 19.6335 19.5 18.75C19.5 18.09 17.6775 17.1645 15 16.7355V15.213C18.495 15.7275 21 17.118 21 18.75C21 20.82 16.971 22.5 12 22.5C7.029 22.5 3 20.82 3 18.75C3 17.1165 5.505 15.7275 9 15.213Z" />
+                            </svg>
+                            Room
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="{% url 'headset' %}">
+                            <svg class="svgNavIcon" width="28" height="28" viewBox="0 0 28 28" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <g clip-path="url(#clip0_5352_8424)">
+                                    <path
+                                        d="M3.79867 8.9862C3.71254 9.21468 3.71939 9.46782 3.81774 9.69131C3.91608 9.91481 4.0981 10.0909 4.32474 10.1817C4.55139 10.2726 4.80461 10.271 5.0301 10.1773C5.25559 10.0836 5.43539 9.90531 5.53093 9.6806L3.79867 8.9862ZM22.4653 9.6806C22.5091 9.79682 22.5757 9.90312 22.6611 9.99329C22.7465 10.0835 22.8491 10.1557 22.9628 10.2057C23.0764 10.2557 23.199 10.2825 23.3231 10.2846C23.4473 10.2867 23.5707 10.2639 23.686 10.2177C23.8012 10.1715 23.9061 10.1028 23.9945 10.0155C24.0829 9.92821 24.1529 9.82418 24.2006 9.70949C24.2482 9.59479 24.2725 9.47174 24.272 9.34754C24.2715 9.22334 24.2462 9.1005 24.1976 8.9862L22.4653 9.6806ZM26.1315 10.9499V17.1921H27.9981V10.9481L26.1315 10.9499ZM20.9253 22.4001H19.9136V24.2667H20.9253V22.4001ZM8.0864 22.4001H7.07467V24.2667H8.0864V22.4001ZM1.86667 17.1921V10.9481H0V17.1921H1.86667ZM1.84427 10.9761C9.78907 8.7057 18.2109 8.7057 26.1557 10.9761L26.6672 9.1822C18.3881 6.81659 9.61193 6.81659 1.3328 9.1822L1.84427 10.9761ZM7.07467 22.4001C5.69342 22.4001 4.36874 21.8514 3.39205 20.8747C2.41536 19.898 1.86667 18.5733 1.86667 17.1921H0C0 19.0684 0.745365 20.8679 2.07212 22.1946C3.39888 23.5214 5.19835 24.2667 7.07467 24.2667V22.4001ZM7.73173 22.611C7.76698 22.5477 7.81836 22.4948 7.88065 22.4578C7.94294 22.4207 8.01393 22.4008 8.0864 22.4001V24.2667C8.34896 24.2672 8.60677 24.1967 8.83253 24.0626C9.05828 23.9285 9.24544 23.7359 9.37067 23.5051L7.73173 22.611ZM9.37067 23.5051C11.3699 19.8409 16.6301 19.8409 18.6312 23.5051L20.2683 22.611C17.5616 17.6494 10.4365 17.6494 7.73173 22.611L9.37067 23.5051ZM19.9136 22.4001C20.0629 22.4001 20.1973 22.4803 20.2683 22.611L18.6312 23.5051C18.7564 23.7359 18.9417 23.9285 19.1675 24.0626C19.3932 24.1967 19.651 24.2672 19.9136 24.2667V22.4001ZM26.1333 17.1921C26.1333 18.5733 25.5846 19.898 24.6079 20.8747C23.6313 21.8514 22.3066 22.4001 20.9253 22.4001V24.2667C22.8017 24.2667 24.6011 23.5214 25.9279 22.1946C27.2546 20.8679 28 19.0684 28 17.1921H26.1333ZM28 10.9481C27.9999 10.5489 27.8698 10.1606 27.6293 9.84196C27.3888 9.52334 27.0511 9.29173 26.6672 9.1822L26.1557 10.9761C26.15 10.9737 26.1449 10.9698 26.141 10.9649C26.137 10.96 26.1344 10.9542 26.1333 10.9481H28ZM1.86667 10.9481C1.86558 10.9542 1.86296 10.96 1.85905 10.9649C1.85513 10.9698 1.85005 10.9737 1.84427 10.9761L1.3328 9.1822C0.949239 9.29165 0.611728 9.52484 0.371276 9.84308C0.130824 10.1613 0.000499702 10.5492 0 10.9481H1.86667ZM4.7264 6.6678L3.79867 8.9862L5.53093 9.6806L6.46053 7.36033L4.7264 6.6678ZM21.5395 7.35847L22.4672 9.6806L24.1976 8.9862L23.2717 6.6678L21.5395 7.35847ZM9.0608 5.60007H18.9392V3.7334H9.0608V5.60007ZM23.2717 6.6678C22.9255 5.80172 22.3277 5.05927 21.5554 4.53622C20.7832 4.01317 19.8719 3.73354 18.9392 3.7334V5.60007C19.4989 5.59997 20.0458 5.76763 20.5093 6.08139C20.9728 6.39516 21.3316 6.84064 21.5395 7.36033L23.2717 6.6678ZM6.46053 7.35847C6.66867 6.83912 7.02762 6.39404 7.49109 6.08062C7.95456 5.7672 8.5013 5.59982 9.0608 5.60007V3.7334C8.12809 3.73354 7.21681 4.01317 6.44455 4.53622C5.6723 5.05927 5.07262 5.80172 4.7264 6.6678L6.46053 7.35847Z"
+                                        fill="#636466" />
+                                </g>
+                                <defs>
+                                    <clipPath id="clip0_5352_8424">
+                                        <rect width="28" height="28" fill="white" />
+                                    </clipPath>
+                                </defs>
+                            </svg>Headsets
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="{% url  'support' %}">
+                            <svg class="svgNavIcon" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M12.5 2C6.986 2 2.5 6.486 2.5 12V16.143C2.5 17.167 3.397 18 4.5 18H5.5C5.76522 18 6.01957 17.8946 6.20711 17.7071C6.39464 17.5196 6.5 17.2652 6.5 17V11.857C6.5 11.5918 6.39464 11.3374 6.20711 11.1499C6.01957 10.9624 5.76522 10.857 5.5 10.857H4.592C5.148 6.987 8.478 4 12.5 4C16.522 4 19.852 6.987 20.408 10.857H19.5C19.2348 10.857 18.9804 10.9624 18.7929 11.1499C18.6054 11.3374 18.5 11.5918 18.5 11.857V18C18.5 19.103 17.603 20 16.5 20H14.5V19H10.5V22H16.5C18.706 22 20.5 20.206 20.5 18C21.603 18 22.5 17.167 22.5 16.143V12C22.5 6.486 18.014 2 12.5 2Z" />
+                            </svg>
+                            Support
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <svg class="svgNavIcon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M11.9998 8C13.0607 8 14.0781 8.42143 14.8283 9.17157C15.5784 9.92172 15.9998 10.9391 15.9998 12C15.9998 13.0609 15.5784 14.0783 14.8283 14.8284C14.0781 15.5786 13.0607 16 11.9998 16C10.939 16 9.92156 15.5786 9.17141 14.8284C8.42127 14.0783 7.99984 13.0609 7.99984 12C7.99984 10.9391 8.42127 9.92172 9.17141 9.17157C9.92156 8.42143 10.939 8 11.9998 8ZM11.9998 10C11.4694 10 10.9607 10.2107 10.5856 10.5858C10.2106 10.9609 9.99984 11.4696 9.99984 12C9.99984 12.5304 10.2106 13.0391 10.5856 13.4142C10.9607 13.7893 11.4694 14 11.9998 14C12.5303 14 13.039 13.7893 13.4141 13.4142C13.7891 13.0391 13.9998 12.5304 13.9998 12C13.9998 11.4696 13.7891 10.9609 13.4141 10.5858C13.039 10.2107 12.5303 10 11.9998 10ZM9.99984 22C9.74984 22 9.53984 21.82 9.49984 21.58L9.12984 18.93C8.49984 18.68 7.95984 18.34 7.43984 17.94L4.94984 18.95C4.72984 19.03 4.45984 18.95 4.33984 18.73L2.33984 15.27C2.20984 15.05 2.26984 14.78 2.45984 14.63L4.56984 12.97L4.49984 12L4.56984 11L2.45984 9.37C2.26984 9.22 2.20984 8.95 2.33984 8.73L4.33984 5.27C4.45984 5.05 4.72984 4.96 4.94984 5.05L7.43984 6.05C7.95984 5.66 8.49984 5.32 9.12984 5.07L9.49984 2.42C9.53984 2.18 9.74984 2 9.99984 2H13.9998C14.2498 2 14.4598 2.18 14.4998 2.42L14.8698 5.07C15.4998 5.32 16.0398 5.66 16.5598 6.05L19.0498 5.05C19.2698 4.96 19.5398 5.05 19.6598 5.27L21.6598 8.73C21.7898 8.95 21.7298 9.22 21.5398 9.37L19.4298 11L19.4998 12L19.4298 13L21.5398 14.63C21.7298 14.78 21.7898 15.05 21.6598 15.27L19.6598 18.73C19.5398 18.95 19.2698 19.04 19.0498 18.95L16.5598 17.95C16.0398 18.34 15.4998 18.68 14.8698 18.93L14.4998 21.58C14.4598 21.82 14.2498 22 13.9998 22H9.99984ZM11.2498 4L10.8798 6.61C9.67984 6.86 8.61984 7.5 7.84984 8.39L5.43984 7.35L4.68984 8.65L6.79984 10.2C6.39984 11.37 6.39984 12.64 6.79984 13.8L4.67984 15.36L5.42984 16.66L7.85984 15.62C8.62984 16.5 9.67984 17.14 10.8698 17.38L11.2398 20H12.7598L13.1298 17.39C14.3198 17.14 15.3698 16.5 16.1398 15.62L18.5698 16.66L19.3198 15.36L17.1998 13.81C17.5998 12.64 17.5998 11.37 17.1998 10.2L19.3098 8.65L18.5598 7.35L16.1498 8.39C15.3798 7.5 14.3198 6.86 13.1198 6.62L12.7498 4H11.2498Z" />
+                            </svg>
+                            Settings
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <ul class="collapse-ul">
+
+                <li class="mt-5" id="collapseli">
+                    <span class="collapseBtn">
+                        <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M9.33333 19.8333V16.3333H17.5V11.6666H9.33333V8.16658L3.5 13.9999L9.33333 19.8333ZM11.6667 2.33325C11.0478 2.33325 10.4543 2.57908 10.0168 3.01667C9.57917 3.45425 9.33333 4.04775 9.33333 4.66659V6.99992H11.6667V4.66659H22.1667V23.3333H11.6667V20.9999H9.33333V23.3333C9.33333 23.9521 9.57917 24.5456 10.0168 24.9832C10.4543 25.4208 11.0478 25.6666 11.6667 25.6666H22.1667C22.7855 25.6666 23.379 25.4208 23.8166 24.9832C24.2542 24.5456 24.5 23.9521 24.5 23.3333V4.66659C24.5 4.04775 24.2542 3.45425 23.8166 3.01667C23.379 2.57908 22.7855 2.33325 22.1667 2.33325H11.6667Z"
+                                fill="#797A7C" />
+                        </svg>
+                        Collapse menu
+                    </span>
+                </li>
+
+
+            </ul>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+
+    <main class="main">
+
+        <div class="d-flex justify-content-center align-items-center h-100 ">
+            <div class="row">
+                <!-- player form  -->
+                <div id="playerform" class="addplayerform">
+                    <div class="d-flex justify-content-between align-center">
+                        <div class="text-white font-semibold">Add Player</div>
+                        <div id="addmore" class="addplayerlink">Add Player</div>
+                    </div>
+                    <div class="addplayerunderline"></div>
+                    <div class="d-flex justify-content-center gap-5 align-center  ">
+                        <div class="mt-3">
+                            <label for="" class="allLbl">Player 1</label>
+                            <input type="text" value="John Doe" placeholder="Enter player name" class="allinput ">
+                        </div>
+                        <div class="mt-3" style="width: 45%;">
+                            <label for="selectedheadsets" class="allLbl">Headsets</label>
+                            <select id="selectedHeadsets"class="allinput">
+                              <option value="default" disabled selected>2 Selected</option>
+                              <option value="Meta Quest 3">Meta Quest 3</option>
+                              <option value="Meta Quest 3">Meta Quest 3</option>
+                              <option value="Meta Quest 3">Meta Quest 3</option>
+                            </select>
+                          </div>
+                    </div>
+                    <div id="addmoredata"></div>
+
+                    <div class="d-flex justify-content-center mt-5 gap-5 align-center">
+                        <a style="text-decoration: none;" href="{% url 'index' %}">
+                            <div class="addplayercancel">Cancel</div>
+                        </a>
+
+                        <button id="playercontinue" class="addplayerbtn">Continue</button>
+
+                    </div>
+                </div>
+
+                <!-- team form  -->
+
+                <div id="teamsform" class="addplayerform" style="display: none">
+                    <div class="d-flex justify-content-between align-center">
+                        <div class="text-white font-semibold">Add Teams</div>
+                        <div id="addmore" class="addplayerlink">Add Team</div>
+                    </div>
+                    <div class="addplayerunderline"></div>
+                    <div class="d-flex justify-content-center gap-5 align-center ">
+                        <div class="mt-3" >
+                            <label for="" class="allLbl">Team 1</label>
+                            <input type="text" value="Alpha" placeholder="Enter player name" class="allinput ">
+                        </div>
+                        <div class="mt-3" style="width: 45%;">
+                            <label for="selectedplayers" class="allLbl">Players</label>
+                            <select id="selectedplayers" class="allinput">
+                              <option value="default" disabled selected>2 Selected</option>
+                              <option value="Player 1">Player1</option>
+                              <option value="Player 2">Player 2</option>
+                              <option value="Player 3">Player 3</option>
+                            </select>
+                          </div>
+                    </div>
+                    <div class="d-flex justify-content-center gap-5 align-center ">
+                        <div class="mt-3">
+                            <label for="" class="allLbl">Team 2</label>
+                            <input type="text" value="Bravo" placeholder="Enter player name" class="allinput ">
+                        </div>
+                        <div class="mt-3" style="width: 45%;">
+                            <label for="selectedplayers" class="allLbl">Players</label>
+                            <select id="selectedplayers" class="allinput">
+                              <option value="default" disabled selected>2 Selected</option>
+                              <option value="Player 1">Player1</option>
+                              <option value="Player 2">Player 2</option>
+                              <option value="Player 3">Player 3</option>
+                            </select>
+                          </div>
+                    </div>
+
+                    <div class="d-flex justify-content-center mt-5 gap-5 align-center">
+                        <a style="text-decoration: none;" href="{% url 'index' %}">
+                            <div class="addplayercancel">Cancel</div>
+                        </a>
+
+                        <button id="teamcontinue" class="addplayerbtn">Continue</button>
+
+                    </div>
+                </div>
+
+
+                <!-- games form -->
+
+
+                <div style="display: none;" id="gameform" class="addplayerform">
+                    <div class="d-flex justify-content-between align-center">
+                        <div class="text-white font-semibold">Select the Game</div>
+                    </div>
+                    <div class="addplayerunderline"></div>
+                    <div class="d-flex justify-content-between align-center ">
+                        <div class="mt-3" style="width: 45%;">
+                            <label for="selectedgames" class="allLbl">Games</label>
+                            <select id="selectedgames" class="allinput">
+                              <option value="default" disabled selected>2 Selected</option>
+                              <option value="Call f Duty">Call f Duty</option>
+                              <option value="GTA V">GTA V</option>
+                              <option value="PUBG">PUBG</option>
+                            </select>
+                          </div>
+
+                    </div>
+                    <div class="addplayerunderline"></div>
+                    <div class="text-white text-center pt-2" style="font-size: 14px;">Click <span class="gamesspan">Here.</span> If You Would Like
+                        To Add Pauses</div>
+                    <div class="addplayerunderline"></div>
+
+                    <div class="d-flex justify-content-center mt-5 gap-5 align-center">
+                        <a style="text-decoration: none;" href="{% url 'index' %}">
+                            <div class="addplayercancel">Cancel</div>
+                        </a>
+
+                        <button id="teamcontinue" class="addplayerbtn">Start</button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </main>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{% static 'js/script.js' %}"></script>
+
+</body>
+
+</html>
