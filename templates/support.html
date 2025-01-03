@@ -305,14 +305,14 @@
         </div>
   
         <div class="supportnavLinks" >
-       <div class="supportnavitems supportnavlinkactive"  >
-        <svg width="19" height="20" viewBox="0 0 19 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <div class="supportnavitems {% if status_filter == 'all' %}supportnavlinkactive {% endif %}" >
+                <svg width="19" height="20" viewBox="0 0 19 20" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M13.4327 17.0834H5.53339C3.1636 17.0834 1.58374 15.8334 1.58374 12.9167V7.08341C1.58374 4.16675 3.1636 2.91675 5.53339 2.91675H13.4327C15.8025 2.91675 17.3823 4.16675 17.3823 7.08341V12.9167C17.3823 15.8334 15.8025 17.0834 13.4327 17.0834Z" stroke="#797A7C" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
             <path d="M13.4327 7.5L10.9603 9.58333C10.1466 10.2667 8.81165 10.2667 7.99803 9.58333L5.53345 7.5" stroke="#797A7C" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
-All Tickets            
+            <a href="?status=all" class="text-muted">All Tickets</a>
        </div>
-       <div class="supportnavitems " >
+       <div class="supportnavitems {% if status_filter == 'ongoing' %}supportnavlinkactive{% endif %}">
         <svg width="18" height="20" viewBox="0 0 18 20" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M1.49976 7.08341C1.49976 4.16675 2.99976 2.91675 5.24976 2.91675H12.7498C14.9998 2.91675 16.4998 4.16675 16.4998 7.08341V12.9167C16.4998 15.8334 14.9998 17.0834 12.7498 17.0834H5.24976" stroke="#797A7C" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
             <path d="M12.7498 7.5L10.4023 9.58333C9.62975 10.2667 8.36225 10.2667 7.58975 9.58333L5.24976 7.5" stroke="#797A7C" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
@@ -320,9 +320,9 @@ All Tickets
             <path d="M1.49976 10.4167H3.74976" stroke="#797A7C" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
             
-On-Going            
+            <a href="?status=ongoing" class="text-muted">On-Going</a>
        </div>
-       <div class="supportnavitems" >
+       <div class="supportnavitems {% if status_filter == 'resolved' %}supportnavlinkactive{% endif %}">
         <svg width="18" height="20" viewBox="0 0 18 20" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M1.49976 7.08341C1.49976 4.16675 2.99976 2.91675 5.24976 2.91675H12.7498C14.9998 2.91675 16.4998 4.16675 16.4998 7.08341V12.9167C16.4998 15.8334 14.9998 17.0834 12.7498 17.0834H5.24976" stroke="#797A7C" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
             <path d="M12.7498 7.5L10.4023 9.58333C9.62975 10.2667 8.36225 10.2667 7.58975 9.58333L5.24976 7.5" stroke="#797A7C" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
@@ -330,47 +330,46 @@ On-Going
             <path d="M1.49976 10.4167H3.74976" stroke="#797A7C" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
             
-Resolved           
+            <a href="?status=resolved" class="text-muted">Resolved</a>
        </div>
         </div>
         <div class="supportunderline" ></div>
 
-        <div class="supportcard">
-            <div class="d-flex align-items-center gap-3"> 
-                <div class="supportcircle"></div>
-                <div class="fw-semibold fs-6 text-white">Ticket# 2023-CS123</div>
-                <div class="text-muted" style="font-size: 14px;margin-left: auto;">Posted at 12:45 AM</div>
+        <div class="supportcard-container">
+            {% for ticket in paginated_tickets %}
+            <div class="supportcard">
+                <div class="d-flex align-items-center gap-3"> 
+                    <div class="supportcircle"></div>
+                    <div class="fw-semibold fs-6 text-white">Ticket# {{ ticket.id }}</div>
+                    <div class="text-muted" style="font-size: 14px; margin-left: auto;">Posted at {{ ticket.created_at }}</div>
+                </div>
+                <div class="text-white pt-2" style="font-size: 14px;">{{ ticket.title }}</div>
+                <div class="text-muted pt-1" style="font-size: 13px;">{{ ticket.description }}</div>
             </div>
-            <div class="text-white pt-2" style="font-size: 14px;">How to deposit money to my portal?</div>
-            <div class="text-muted pt-1" style="font-size: 13px;">Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.</div>
+            {% endfor %}
         </div>
-        <div class="supportcard">
-            <div class="d-flex align-items-center gap-3"> 
-                <div class="supportcircle"></div>
-                <div class="fw-semibold fs-6 text-white">Ticket# 2023-CS123</div>
-                <div class="text-muted" style="font-size: 14px;margin-left: auto;">Posted at 12:45 AM</div>
+    
+        <!-- Pagination -->
+        <div class="d-flex align-items-center justify-content-center gap-5 mt-4" style="cursor: pointer;">
+            {% if paginated_tickets.has_previous %}
+            <a href="?status={{ status_filter }}&page={{ paginated_tickets.previous_page_number }}" class="text-muted">Previous</a>
+            {% endif %}
+            
+            <div class="d-flex align-items-center gap-2">
+                {% for num in paginated_tickets.paginator.page_range %}
+                    {% if num == paginated_tickets.number %}
+                        <div class="page-itemactive">{{ num }}</div>
+                    {% else %}
+                        <a href="?status={{ status_filter }}&page={{ num }}" class="page-item">{{ num }}</a>
+                    {% endif %}
+                {% endfor %}
             </div>
-            <div class="text-white pt-2" style="font-size: 14px;">How to deposit money to my portal?</div>
-            <div class="text-muted pt-1" style="font-size: 13px;">Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.</div>
-        </div>
-        <div class="supportcard">
-            <div class="d-flex align-items-center gap-3"> 
-                <div class="supportcircle"></div>
-                <div class="fw-semibold fs-6 text-white">Ticket# 2023-CS123</div>
-                <div class="text-muted" style="font-size: 14px;margin-left: auto;">Posted at 12:45 AM</div>
-            </div>
-            <div class="text-white pt-2" style="font-size: 14px;">How to deposit money to my portal?</div>
-            <div class="text-muted pt-1" style="font-size: 13px;">Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.</div>
+            
+            {% if paginated_tickets.has_next %}
+            <a href="?status={{ status_filter }}&page={{ paginated_tickets.next_page_number }}" class="text-white">Next</a>
+            {% endif %}
         </div>
 
-        <div class="d-flex align-items-center justify-content-center gap-5 mt-4" style="cursor: pointer;" >
-         <div class="text-muted" >Previous</div>
-         <div class="d-flex align-items-center gap-2" >
-            <div class="page-itemactive" > 1</div>
-            <div class="page-item">2</div>
-         </div>
-          <div class="text-white" >Next</div>
-        </div>
 
         <div id="supportform" class="supportform" style="display: none" >
             <div class="d-flex justify-content-between align-center">

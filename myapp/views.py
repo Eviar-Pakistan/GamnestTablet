@@ -4,6 +4,10 @@ import json
 from django.contrib.auth.decorators import login_required
 import requests
 from django.views.decorators.csrf import csrf_exempt
+from django.core.paginator import Paginator
+from django.utils import timezone
+import requests
+from django.core.paginator import Paginator
 
 def login(request):
     if request.method == "POST":
@@ -125,5 +129,76 @@ def headset(request):
     return render(request,'headset.html',{'headsets':filtered_headsets})
 
 def support(request):
+    url = "http://gamenest.se/api/tickets/"
 
-    return render(request,'support.html')
+    today_tickets = []
+    ongoing_tickets = []
+    resolved_tickets = []
+
+    try:
+        response = requests.get(url)
+        if response.status_code == 200:
+            support_ticket_data = response.json()
+
+            # Sort tickets by created_at in descending order
+            support_ticket_data.sort(
+                key=lambda ticket: ticket.get('created_at', ''),
+                reverse=True
+            )
+
+            # Filter by search term and priority
+            search_query = request.GET.get('search', '').lower()
+            priority_filter = request.GET.get('priority', '').lower()
+
+            filtered_tickets = []
+
+            for ticket in support_ticket_data:
+                ticket_id = str(ticket.get('id', ''))
+                ticket_title = (ticket.get('title') or '').lower()
+                ticket_username = (ticket.get('user_name') or '').lower()  
+                ticket_email = (ticket.get('useremail') or '').lower()
+                ticket_priority = (ticket.get('priority') or '').lower()
+
+                # Check if the ticket matches search criteria (id or title)
+                if search_query in ticket_id or search_query in ticket_title or search_query in ticket_username or search_query in ticket_email:
+                    # If a priority filter is selected, check if it matches
+                    if not priority_filter or priority_filter == ticket_priority:
+                        filtered_tickets.append(ticket)
+
+            # Process tickets
+            today_date = timezone.now().date()
+            for ticket in filtered_tickets:
+                created_at = ticket.get('created_at', '')[:10]
+                status = ticket.get('ticketstatus')
+
+    
+                # Categorize tickets
+                if created_at == str(today_date) and status != 'resolved':
+                    today_tickets.append(ticket)
+                if status == 'on-going':
+                    ongoing_tickets.append(ticket)
+                if status == 'resolved':
+                    resolved_tickets.append(ticket)
+
+    except requests.RequestException as e:
+        print(f"Error connecting to the support tickets API: {e}")
+
+    
+    # Paginate filtered tickets
+    def paginate(queryset, page_key, per_page=10):
+        page_number = request.GET.get(page_key, 1)
+        paginator = Paginator(queryset, per_page)
+        return paginator.get_page(page_number)
+
+    paginated_tickets = paginate(filtered_tickets, 'page')
+    paginated_resolved_tickets = paginate(resolved_tickets, 'resolved_page')
+    paginated_ongoing_tickets = paginate(ongoing_tickets, 'ongoing_page')
+    paginated_new_tickets = paginate(today_tickets, 'new_page')
+
+    return render(request,'support.html',
+                  {   
+        'paginated_tickets': paginated_tickets,
+        'paginated_resolved_tickets': paginated_resolved_tickets,
+        'paginated_ongoing_tickets': paginated_ongoing_tickets,
+        'paginated_new_tickets': paginated_new_tickets,
+        })
