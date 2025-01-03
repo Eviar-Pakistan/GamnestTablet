@@ -74,20 +74,22 @@ WSGI_APPLICATION = 'GamnestTablet.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
+import os
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'D:/Gamnestdashboardpython/db.sqlite3',
-    },
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
 }
 
 
 
 
 
-AUTHENTICATION_BACKENDS = [
-    'myapp.auth_backends.DashboardAuthBackend',
 
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
 ]
 
 

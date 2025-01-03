@@ -23,20 +23,15 @@
             <div class="row">
                 <div class="col-12">
                     <nav class="navbar navbar-expand-md headerNav">
-                        <div class="container-fluid">
-                            <div class="position-relative">
-                                <input type="text" placeholder="Search" class="searchField">
-                                <div class="searchIcon">
-                                    <img src="{% static 'assets/serach.png'%}" alt="search-icon" />
-                                </div>
-                            </div>
+                        <div class="container-fluid ">
+                            {% comment %}  {% endcomment %}
                             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                                 data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
                                 aria-label="Toggle navigation">
                                 <i class="fas fa-bars" style="color: #fff;"></i>
                             </button>
                             <div class="collapse navbar-collapse " id="navbarNav">
-                                <ul class="navbar-nav ms-auto align-items-md-center align-items-end">
+                                <ul class="navbar-nav ms-auto align-items-md-center mt-2 align-items-end">
                                     <li class="nav-item">
                                         <div class="dropdown-center">
                                             <button class="notiBell" type="button">
@@ -300,31 +295,26 @@
 
     <main class="main">
         <div class="roombtncontainer">
-            <button id="addroom" class="addroombtn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+            {% comment %} <button id="addroom" class="addroombtn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"
                     xmlns="http://www.w3.org/2000/svg">
                     <path fill-rule="evenodd" clip-rule="evenodd"
                         d="M3.48711 10.9485C2.90636 10.9485 2.43557 11.4192 2.43557 12C2.43557 12.5808 2.90636 13.0515 3.48711 13.0515L10.8479 13.0515L10.8479 20.4124C10.8479 20.9931 11.3187 21.4639 11.8995 21.4639C12.4802 21.4639 12.951 20.9931 12.951 20.4124L12.951 13.0515H20.3119C20.8926 13.0515 21.3634 12.5808 21.3634 12C21.3634 11.4192 20.8926 10.9485 20.3119 10.9485H12.951L12.951 3.58762C12.951 3.00687 12.4802 2.53607 11.8995 2.53607C11.3187 2.53607 10.8479 3.00687 10.8479 3.58762L10.8479 10.9485L3.48711 10.9485Z"
                         fill="white" />
                 </svg>
-                New Room</button>
+                New Room</button> {% endcomment %}
         </div>
-        <div id="games" class="row gap-5 align-center ">
+        <div id="rooms" class="row gap-5 align-center">
+            {% for room in rooms %}
             <div class="roomcard col-lg-4" style="width: 18rem;">
-                <img src="{% static 'assets/room1.png'%}" class="card-img-top" style="border-radius: 8px 8px 0 0;" alt="...">
+                <img src="{{ room.picture }}" class="card-img-top" style="border-radius: 8px 8px 0 0;" alt="Room Image">
                 <div class="card-content" style="display: block;padding: 20px;">
-                    <div>Living Room</div>
-                    <div class="roomdimentiontext">Dimention: 12' x 16'</div>
+                    <div>{{ room.name }}</div>
+                    <div class="roomdimentiontext">{{ room.description }}</div>
                 </div>
             </div>
-
-            <div class="roomcard col-lg-4" style="width: 18rem;">
-                <img src="{% static 'assets/room2.png'%}" class="card-img-top" style="border-radius: 8px 8px 0 0;" alt="...">
-                <div class="card-content" style="display: block;padding: 20px;">
-                    <div>Living Room 1</div>
-                    <div class="roomdimentiontext">Dimention: 12' x 16'</div>
-                </div>
-            </div>
+            {% endfor %}
         </div>
+        
             
 
 
@@ -358,7 +348,7 @@
             </div>
         </div>
 
-        <div id="roomform" class="roomform" style="display: none" >
+        {% comment %} <div id="roomform" class="roomform" style="display: none" >
             <div class="d-flex justify-content-between align-center">
                 <div class="text-white font-semibold">Add New Room</div>
                 <div id="roomcancel" class="roomformcancel" >X</div>
@@ -386,7 +376,7 @@
               <video id="cameraStream" autoplay playsinline></video>
 
                 <button type="button" id="addroom" class="roomsubmitbtn">Submit</button> 
-        </div>
+        </div> {% endcomment %}
 
 
     </main>

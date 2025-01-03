@@ -24,19 +24,14 @@
                 <div class="col-12">
                     <nav class="navbar navbar-expand-md headerNav">
                         <div class="container-fluid">
-                            <div class="position-relative">
-                                <input type="text" placeholder="Search" class="searchField">
-                                <div class="searchIcon">
-                                    <img src="{% static 'assets/serach.png'%}" alt="search-icon" />
-                                </div>
-                            </div>
+                            
                             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                                 data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
                                 aria-label="Toggle navigation">
                                 <i class="fas fa-bars" style="color: #fff;"></i>
                             </button>
                             <div class="collapse navbar-collapse " id="navbarNav">
-                                <ul class="navbar-nav ms-auto align-items-md-center align-items-end">
+                                <ul class="navbar-nav ms-auto align-items-md-center mt-2 align-items-end">
                                     <li class="nav-item">
                                         <div class="dropdown-center">
                                             <button class="notiBell" type="button">
@@ -300,207 +295,41 @@
 
     <main class="main">
 
-        <div id="games" class="row justify-content-between align-center ">
-            <div class="roomcard col-lg-3 col-md-6" style="width: 15rem;">
-                <img src="{% static 'assets/pngegg 1.png'%}" class="card-img-top" style="border-radius: 8px 8px 0 0;" alt="...">
-                <div class="card-content" style="display: block;padding: 20px;">
-                    <div class="d-flex justify-content-between align-items-center" >
-                        <div>Meta Quest 3</div>
-                        <div class="headsetmodel" >112476940</div>
-                      </div>
-                      <div style="font-size:10px" class="d-flex justify-content-between align-items-center" >
-                      <div><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M5.25 7.5V10.5M7.5 7.5V10.5M9.75 7.5V10.5M12 7.5V10.5M4.5 5.25H12.75C13.1478 5.25 13.5294 5.40804 13.8107 5.68934C14.092 5.97064 14.25 6.35218 14.25 6.75V7.125C14.25 7.22446 14.2895 7.31984 14.3598 7.39017C14.4302 7.46049 14.5255 7.5 14.625 7.5C14.7245 7.5 14.8198 7.53951 14.8902 7.60983C14.9605 7.68016 15 7.77554 15 7.875V10.125C15 10.2245 14.9605 10.3198 14.8902 10.3902C14.8198 10.4605 14.7245 10.5 14.625 10.5C14.5255 10.5 14.4302 10.5395 14.3598 10.6098C14.2895 10.6802 14.25 10.7755 14.25 10.875V11.25C14.25 11.6478 14.092 12.0294 13.8107 12.3107C13.5294 12.592 13.1478 12.75 12.75 12.75H4.5C4.10218 12.75 3.72064 12.592 3.43934 12.3107C3.15804 12.0294 3 11.6478 3 11.25V6.75C3 6.35218 3.15804 5.97064 3.43934 5.68934C3.72064 5.40804 4.10218 5.25 4.5 5.25Z" stroke="#C69006" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                        Headset Battery</div>
-                      <div>100%</div>
+        <div id="headsets" class="row align-items-center justify-content-between">
+            {% for headset in headsets %}
+                <!-- Each headset card will take 3 columns on large screens (4 items per row) -->
+                <div class="col-lg-4 col-md-6 col-sm-6 col-12">
+                    <div class="roomcard" style="width: 15rem;">
+                        <img src="{% static 'assets/pngegg 1.png' %}" class="card-img-top" style="border-radius: 8px 8px 0 0;" alt="...">
+                        <div class="card-content" style="display: block; padding: 20px;">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>{{ headset.name }}</div>
+                                <div class="headsetmodel">{{ headset.modelNo }}</div>
+                            </div>
+                            <div style="font-size:10px" class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M5.25 7.5V10.5M7.5 7.5V10.5M9.75 7.5V10.5M12 7.5V10.5M4.5 5.25H12.75C13.1478 5.25 13.5294 5.40804 13.8107 5.68934C14.092 5.97064 14.25 6.35218 14.25 6.75V7.125C14.25 7.22446 14.2895 7.31984 14.3598 7.39017C14.4302 7.46049 14.5255 7.5 14.625 7.5C14.7245 7.5 14.8198 7.53951 14.8902 7.60983C14.9605 7.68016 15 7.77554 15 7.875V10.125C15 10.2245 14.9605 10.3198 14.8902 10.3902C14.8198 10.4605 14.7245 10.5 14.625 10.5C14.5255 10.5 14.4302 10.5395 14.3598 10.6098C14.2895 10.6802 14.25 10.7755 14.25 10.875V11.25C14.25 11.6478 14.092 12.0294 13.8107 12.3107C13.5294 12.592 13.1478 12.75 12.75 12.75H4.5C4.10218 12.75 3.72064 12.592 3.43934 12.3107C3.15804 12.0294 3 11.6478 3 11.25V6.75C3 6.35218 3.15804 5.97064 3.43934 5.68934C3.72064 5.40804 4.10218 5.25 4.5 5.25Z" stroke="#C69006" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                    Headset Battery
+                                </div>
+                                <div>100%</div>
+                            </div>
+                            <div style="font-size:10px" class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M5.25 7.5V10.5M7.5 7.5V10.5M9.75 7.5V10.5M12 7.5V10.5M4.5 5.25H12.75C13.1478 5.25 13.5294 5.40804 13.8107 5.68934C14.092 5.97064 14.25 6.35218 14.25 6.75V7.125C14.25 7.22446 14.2895 7.31984 14.3598 7.39017C14.4302 7.46049 14.5255 7.5 14.625 7.5C14.7245 7.5 14.8198 7.53951 14.8902 7.60983C14.9605 7.68016 15 7.77554 15 7.875V10.125C15 10.2245 14.9605 10.3198 14.8902 10.3902C14.8198 10.4605 14.7245 10.5 14.625 10.5C14.5255 10.5 14.4302 10.5395 14.3598 10.6098C14.2895 10.6802 14.25 10.7755 14.25 10.875V11.25C14.25 11.6478 14.092 12.0294 13.8107 12.3107C13.5294 12.592 13.1478 12.75 12.75 12.75H4.5C4.10218 12.75 3.72064 12.592 3.43934 12.3107C3.15804 12.0294 3 11.6478 3 11.25V6.75C3 6.35218 3.15804 5.97064 3.43934 5.68934C3.72064 5.40804 4.10218 5.25 4.5 5.25Z" stroke="#C69006" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                    Controllers Battery
+                                </div>
+                                <div>100%</div>
+                            </div>
+                        </div>
                     </div>
-                    <div style="font-size:10px" class="d-flex justify-content-between align-items-center" >
-                        <div><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M5.25 7.5V10.5M7.5 7.5V10.5M9.75 7.5V10.5M12 7.5V10.5M4.5 5.25H12.75C13.1478 5.25 13.5294 5.40804 13.8107 5.68934C14.092 5.97064 14.25 6.35218 14.25 6.75V7.125C14.25 7.22446 14.2895 7.31984 14.3598 7.39017C14.4302 7.46049 14.5255 7.5 14.625 7.5C14.7245 7.5 14.8198 7.53951 14.8902 7.60983C14.9605 7.68016 15 7.77554 15 7.875V10.125C15 10.2245 14.9605 10.3198 14.8902 10.3902C14.8198 10.4605 14.7245 10.5 14.625 10.5C14.5255 10.5 14.4302 10.5395 14.3598 10.6098C14.2895 10.6802 14.25 10.7755 14.25 10.875V11.25C14.25 11.6478 14.092 12.0294 13.8107 12.3107C13.5294 12.592 13.1478 12.75 12.75 12.75H4.5C4.10218 12.75 3.72064 12.592 3.43934 12.3107C3.15804 12.0294 3 11.6478 3 11.25V6.75C3 6.35218 3.15804 5.97064 3.43934 5.68934C3.72064 5.40804 4.10218 5.25 4.5 5.25Z" stroke="#C69006" stroke-linecap="round" stroke-linejoin="round"/>
-                          </svg>
-                          Controllers Battery</div>
-                        <div>100%</div>
-                      </div>
                 </div>
-            </div>
-
-            <div class="roomcard col-lg-3 col-md-6" style="width: 15rem;">
-                <img src="{% static 'assets/pngegg 1.png'%}" class="card-img-top" style="border-radius: 8px 8px 0 0;" alt="...">
-                <div class="card-content" style="display: block;padding: 20px;">
-                    <div class="d-flex justify-content-between align-items-center" >
-                        <div>Meta Quest 3</div>
-                        <div class="headsetmodel" >112476941</div>
-                      </div>
-                      <div style="font-size:10px" class="d-flex justify-content-between align-items-center" >
-                        <div><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M5.25 7.5V10.5M7.5 7.5V10.5M9.75 7.5V10.5M12 7.5V10.5M4.5 5.25H12.75C13.1478 5.25 13.5294 5.40804 13.8107 5.68934C14.092 5.97064 14.25 6.35218 14.25 6.75V7.125C14.25 7.22446 14.2895 7.31984 14.3598 7.39017C14.4302 7.46049 14.5255 7.5 14.625 7.5C14.7245 7.5 14.8198 7.53951 14.8902 7.60983C14.9605 7.68016 15 7.77554 15 7.875V10.125C15 10.2245 14.9605 10.3198 14.8902 10.3902C14.8198 10.4605 14.7245 10.5 14.625 10.5C14.5255 10.5 14.4302 10.5395 14.3598 10.6098C14.2895 10.6802 14.25 10.7755 14.25 10.875V11.25C14.25 11.6478 14.092 12.0294 13.8107 12.3107C13.5294 12.592 13.1478 12.75 12.75 12.75H4.5C4.10218 12.75 3.72064 12.592 3.43934 12.3107C3.15804 12.0294 3 11.6478 3 11.25V6.75C3 6.35218 3.15804 5.97064 3.43934 5.68934C3.72064 5.40804 4.10218 5.25 4.5 5.25Z" stroke="#C69006" stroke-linecap="round" stroke-linejoin="round"/>
-                          </svg>
-                          Headset Battery</div>
-                        <div>100%</div>
-                      </div>
-                      <div style="font-size:10px" class="d-flex justify-content-between align-items-center" >
-                          <div><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M5.25 7.5V10.5M7.5 7.5V10.5M9.75 7.5V10.5M12 7.5V10.5M4.5 5.25H12.75C13.1478 5.25 13.5294 5.40804 13.8107 5.68934C14.092 5.97064 14.25 6.35218 14.25 6.75V7.125C14.25 7.22446 14.2895 7.31984 14.3598 7.39017C14.4302 7.46049 14.5255 7.5 14.625 7.5C14.7245 7.5 14.8198 7.53951 14.8902 7.60983C14.9605 7.68016 15 7.77554 15 7.875V10.125C15 10.2245 14.9605 10.3198 14.8902 10.3902C14.8198 10.4605 14.7245 10.5 14.625 10.5C14.5255 10.5 14.4302 10.5395 14.3598 10.6098C14.2895 10.6802 14.25 10.7755 14.25 10.875V11.25C14.25 11.6478 14.092 12.0294 13.8107 12.3107C13.5294 12.592 13.1478 12.75 12.75 12.75H4.5C4.10218 12.75 3.72064 12.592 3.43934 12.3107C3.15804 12.0294 3 11.6478 3 11.25V6.75C3 6.35218 3.15804 5.97064 3.43934 5.68934C3.72064 5.40804 4.10218 5.25 4.5 5.25Z" stroke="#C69006" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                            Controllers Battery</div>
-                          <div>100%</div>
-                        </div>
-                    
-                </div>
-            </div>
-
-            <div class="roomcard col-lg-3 col-md-6" style="width: 15rem;">
-                <img src="{% static 'assets/pngegg 1.png'%}" class="card-img-top" style="border-radius: 8px 8px 0 0;" alt="...">
-                <div class="card-content" style="display: block;padding: 20px;">
-                    <div class="d-flex justify-content-between align-items-center" >
-                        <div>Meta Quest 3</div>
-                        <div class="headsetmodel" >112476942</div>
-                      </div>
-                      <div style="font-size:10px" class="d-flex justify-content-between align-items-center" >
-                        <div><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M5.25 7.5V10.5M7.5 7.5V10.5M9.75 7.5V10.5M12 7.5V10.5M4.5 5.25H12.75C13.1478 5.25 13.5294 5.40804 13.8107 5.68934C14.092 5.97064 14.25 6.35218 14.25 6.75V7.125C14.25 7.22446 14.2895 7.31984 14.3598 7.39017C14.4302 7.46049 14.5255 7.5 14.625 7.5C14.7245 7.5 14.8198 7.53951 14.8902 7.60983C14.9605 7.68016 15 7.77554 15 7.875V10.125C15 10.2245 14.9605 10.3198 14.8902 10.3902C14.8198 10.4605 14.7245 10.5 14.625 10.5C14.5255 10.5 14.4302 10.5395 14.3598 10.6098C14.2895 10.6802 14.25 10.7755 14.25 10.875V11.25C14.25 11.6478 14.092 12.0294 13.8107 12.3107C13.5294 12.592 13.1478 12.75 12.75 12.75H4.5C4.10218 12.75 3.72064 12.592 3.43934 12.3107C3.15804 12.0294 3 11.6478 3 11.25V6.75C3 6.35218 3.15804 5.97064 3.43934 5.68934C3.72064 5.40804 4.10218 5.25 4.5 5.25Z" stroke="#C69006" stroke-linecap="round" stroke-linejoin="round"/>
-                          </svg>
-                          Headset Battery</div>
-                        <div>100%</div>
-                      </div>
-                      <div style="font-size:10px" class="d-flex justify-content-between align-items-center" >
-                          <div><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M5.25 7.5V10.5M7.5 7.5V10.5M9.75 7.5V10.5M12 7.5V10.5M4.5 5.25H12.75C13.1478 5.25 13.5294 5.40804 13.8107 5.68934C14.092 5.97064 14.25 6.35218 14.25 6.75V7.125C14.25 7.22446 14.2895 7.31984 14.3598 7.39017C14.4302 7.46049 14.5255 7.5 14.625 7.5C14.7245 7.5 14.8198 7.53951 14.8902 7.60983C14.9605 7.68016 15 7.77554 15 7.875V10.125C15 10.2245 14.9605 10.3198 14.8902 10.3902C14.8198 10.4605 14.7245 10.5 14.625 10.5C14.5255 10.5 14.4302 10.5395 14.3598 10.6098C14.2895 10.6802 14.25 10.7755 14.25 10.875V11.25C14.25 11.6478 14.092 12.0294 13.8107 12.3107C13.5294 12.592 13.1478 12.75 12.75 12.75H4.5C4.10218 12.75 3.72064 12.592 3.43934 12.3107C3.15804 12.0294 3 11.6478 3 11.25V6.75C3 6.35218 3.15804 5.97064 3.43934 5.68934C3.72064 5.40804 4.10218 5.25 4.5 5.25Z" stroke="#C69006" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                            Controllers Battery</div>
-                          <div>100%</div>
-                        </div>
-                    
-                </div>
-            </div>
-
-            <div class="roomcard col-lg-3 col-md-6" style="width: 15rem;">
-                <img src="{% static 'assets/pngegg 1.png'%}" class="card-img-top" style="border-radius: 8px 8px 0 0;" alt="...">
-                <div class="card-content" style="display: block;padding: 20px;">
-                    <div class="d-flex justify-content-between align-items-center" >
-                        <div>Meta Quest 3</div>
-                        <div class="headsetmodel" >112476943</div>
-                      </div>
-                      <div style="font-size:10px" class="d-flex justify-content-between align-items-center" >
-                        <div><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M5.25 7.5V10.5M7.5 7.5V10.5M9.75 7.5V10.5M12 7.5V10.5M4.5 5.25H12.75C13.1478 5.25 13.5294 5.40804 13.8107 5.68934C14.092 5.97064 14.25 6.35218 14.25 6.75V7.125C14.25 7.22446 14.2895 7.31984 14.3598 7.39017C14.4302 7.46049 14.5255 7.5 14.625 7.5C14.7245 7.5 14.8198 7.53951 14.8902 7.60983C14.9605 7.68016 15 7.77554 15 7.875V10.125C15 10.2245 14.9605 10.3198 14.8902 10.3902C14.8198 10.4605 14.7245 10.5 14.625 10.5C14.5255 10.5 14.4302 10.5395 14.3598 10.6098C14.2895 10.6802 14.25 10.7755 14.25 10.875V11.25C14.25 11.6478 14.092 12.0294 13.8107 12.3107C13.5294 12.592 13.1478 12.75 12.75 12.75H4.5C4.10218 12.75 3.72064 12.592 3.43934 12.3107C3.15804 12.0294 3 11.6478 3 11.25V6.75C3 6.35218 3.15804 5.97064 3.43934 5.68934C3.72064 5.40804 4.10218 5.25 4.5 5.25Z" stroke="#C69006" stroke-linecap="round" stroke-linejoin="round"/>
-                          </svg>
-                          Headset Battery</div>
-                        <div>100%</div>
-                      </div>
-                      <div style="font-size:10px" class="d-flex justify-content-between align-items-center" >
-                          <div><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M5.25 7.5V10.5M7.5 7.5V10.5M9.75 7.5V10.5M12 7.5V10.5M4.5 5.25H12.75C13.1478 5.25 13.5294 5.40804 13.8107 5.68934C14.092 5.97064 14.25 6.35218 14.25 6.75V7.125C14.25 7.22446 14.2895 7.31984 14.3598 7.39017C14.4302 7.46049 14.5255 7.5 14.625 7.5C14.7245 7.5 14.8198 7.53951 14.8902 7.60983C14.9605 7.68016 15 7.77554 15 7.875V10.125C15 10.2245 14.9605 10.3198 14.8902 10.3902C14.8198 10.4605 14.7245 10.5 14.625 10.5C14.5255 10.5 14.4302 10.5395 14.3598 10.6098C14.2895 10.6802 14.25 10.7755 14.25 10.875V11.25C14.25 11.6478 14.092 12.0294 13.8107 12.3107C13.5294 12.592 13.1478 12.75 12.75 12.75H4.5C4.10218 12.75 3.72064 12.592 3.43934 12.3107C3.15804 12.0294 3 11.6478 3 11.25V6.75C3 6.35218 3.15804 5.97064 3.43934 5.68934C3.72064 5.40804 4.10218 5.25 4.5 5.25Z" stroke="#C69006" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                            Controllers Battery</div>
-                          <div>100%</div>
-                        </div>
-                    
-                </div>
-            </div>
-
-            <div class="roomcard col-lg-3 col-md-6" style="width: 15rem;">
-                <img src="{% static 'assets/pngegg 1.png'%}" class="card-img-top" style="border-radius: 8px 8px 0 0;" alt="...">
-                <div class="card-content" style="display: block;padding: 20px;">
-                    <div class="d-flex justify-content-between align-items-center" >
-                        <div>Meta Quest 3</div>
-                        <div class="headsetmodel" >112476944</div>
-                      </div>
-                      <div style="font-size:10px" class="d-flex justify-content-between align-items-center" >
-                        <div><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M5.25 7.5V10.5M7.5 7.5V10.5M9.75 7.5V10.5M12 7.5V10.5M4.5 5.25H12.75C13.1478 5.25 13.5294 5.40804 13.8107 5.68934C14.092 5.97064 14.25 6.35218 14.25 6.75V7.125C14.25 7.22446 14.2895 7.31984 14.3598 7.39017C14.4302 7.46049 14.5255 7.5 14.625 7.5C14.7245 7.5 14.8198 7.53951 14.8902 7.60983C14.9605 7.68016 15 7.77554 15 7.875V10.125C15 10.2245 14.9605 10.3198 14.8902 10.3902C14.8198 10.4605 14.7245 10.5 14.625 10.5C14.5255 10.5 14.4302 10.5395 14.3598 10.6098C14.2895 10.6802 14.25 10.7755 14.25 10.875V11.25C14.25 11.6478 14.092 12.0294 13.8107 12.3107C13.5294 12.592 13.1478 12.75 12.75 12.75H4.5C4.10218 12.75 3.72064 12.592 3.43934 12.3107C3.15804 12.0294 3 11.6478 3 11.25V6.75C3 6.35218 3.15804 5.97064 3.43934 5.68934C3.72064 5.40804 4.10218 5.25 4.5 5.25Z" stroke="#C69006" stroke-linecap="round" stroke-linejoin="round"/>
-                          </svg>
-                          Headset Battery</div>
-                        <div>100%</div>
-                      </div>
-                      <div style="font-size:10px" class="d-flex justify-content-between align-items-center" >
-                          <div><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M5.25 7.5V10.5M7.5 7.5V10.5M9.75 7.5V10.5M12 7.5V10.5M4.5 5.25H12.75C13.1478 5.25 13.5294 5.40804 13.8107 5.68934C14.092 5.97064 14.25 6.35218 14.25 6.75V7.125C14.25 7.22446 14.2895 7.31984 14.3598 7.39017C14.4302 7.46049 14.5255 7.5 14.625 7.5C14.7245 7.5 14.8198 7.53951 14.8902 7.60983C14.9605 7.68016 15 7.77554 15 7.875V10.125C15 10.2245 14.9605 10.3198 14.8902 10.3902C14.8198 10.4605 14.7245 10.5 14.625 10.5C14.5255 10.5 14.4302 10.5395 14.3598 10.6098C14.2895 10.6802 14.25 10.7755 14.25 10.875V11.25C14.25 11.6478 14.092 12.0294 13.8107 12.3107C13.5294 12.592 13.1478 12.75 12.75 12.75H4.5C4.10218 12.75 3.72064 12.592 3.43934 12.3107C3.15804 12.0294 3 11.6478 3 11.25V6.75C3 6.35218 3.15804 5.97064 3.43934 5.68934C3.72064 5.40804 4.10218 5.25 4.5 5.25Z" stroke="#C69006" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                            Controllers Battery</div>
-                          <div>100%</div>
-                        </div>
-                    
-                </div>
-            </div>
-
-            <div class="roomcard col-lg-3 col-md-6" style="width: 15rem;">
-                <img src="{% static 'assets/pngegg 1.png'%}" class="card-img-top" style="border-radius: 8px 8px 0 0;" alt="...">
-                <div class="card-content" style="display: block;padding: 20px;">
-                    <div class="d-flex justify-content-between align-items-center" >
-                        <div>Meta Quest 3</div>
-                        <div class="headsetmodel" >112476945</div>
-                      </div>
-                      <div style="font-size:10px" class="d-flex justify-content-between align-items-center" >
-                        <div><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M5.25 7.5V10.5M7.5 7.5V10.5M9.75 7.5V10.5M12 7.5V10.5M4.5 5.25H12.75C13.1478 5.25 13.5294 5.40804 13.8107 5.68934C14.092 5.97064 14.25 6.35218 14.25 6.75V7.125C14.25 7.22446 14.2895 7.31984 14.3598 7.39017C14.4302 7.46049 14.5255 7.5 14.625 7.5C14.7245 7.5 14.8198 7.53951 14.8902 7.60983C14.9605 7.68016 15 7.77554 15 7.875V10.125C15 10.2245 14.9605 10.3198 14.8902 10.3902C14.8198 10.4605 14.7245 10.5 14.625 10.5C14.5255 10.5 14.4302 10.5395 14.3598 10.6098C14.2895 10.6802 14.25 10.7755 14.25 10.875V11.25C14.25 11.6478 14.092 12.0294 13.8107 12.3107C13.5294 12.592 13.1478 12.75 12.75 12.75H4.5C4.10218 12.75 3.72064 12.592 3.43934 12.3107C3.15804 12.0294 3 11.6478 3 11.25V6.75C3 6.35218 3.15804 5.97064 3.43934 5.68934C3.72064 5.40804 4.10218 5.25 4.5 5.25Z" stroke="#C69006" stroke-linecap="round" stroke-linejoin="round"/>
-                          </svg>
-                          Headset Battery</div>
-                        <div>100%</div>
-                      </div>
-                      <div style="font-size:10px" class="d-flex justify-content-between align-items-center" >
-                          <div><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M5.25 7.5V10.5M7.5 7.5V10.5M9.75 7.5V10.5M12 7.5V10.5M4.5 5.25H12.75C13.1478 5.25 13.5294 5.40804 13.8107 5.68934C14.092 5.97064 14.25 6.35218 14.25 6.75V7.125C14.25 7.22446 14.2895 7.31984 14.3598 7.39017C14.4302 7.46049 14.5255 7.5 14.625 7.5C14.7245 7.5 14.8198 7.53951 14.8902 7.60983C14.9605 7.68016 15 7.77554 15 7.875V10.125C15 10.2245 14.9605 10.3198 14.8902 10.3902C14.8198 10.4605 14.7245 10.5 14.625 10.5C14.5255 10.5 14.4302 10.5395 14.3598 10.6098C14.2895 10.6802 14.25 10.7755 14.25 10.875V11.25C14.25 11.6478 14.092 12.0294 13.8107 12.3107C13.5294 12.592 13.1478 12.75 12.75 12.75H4.5C4.10218 12.75 3.72064 12.592 3.43934 12.3107C3.15804 12.0294 3 11.6478 3 11.25V6.75C3 6.35218 3.15804 5.97064 3.43934 5.68934C3.72064 5.40804 4.10218 5.25 4.5 5.25Z" stroke="#C69006" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                            Controllers Battery</div>
-                          <div>100%</div>
-                        </div>
-                    
-                </div>
-            </div>
-
-            <div class="roomcard col-lg-3 col-md-6" style="width: 15rem;">
-                <img src="{% static 'assets/pngegg 1.png'%}" class="card-img-top" style="border-radius: 8px 8px 0 0;" alt="...">
-                <div class="card-content" style="display: block;padding: 20px;">
-                    <div class="d-flex justify-content-between align-items-center" >
-                        <div>Meta Quest 3</div>
-                        <div class="headsetmodel" >112476946</div>
-                      </div>
-                      <div style="font-size:10px" class="d-flex justify-content-between align-items-center" >
-                        <div><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M5.25 7.5V10.5M7.5 7.5V10.5M9.75 7.5V10.5M12 7.5V10.5M4.5 5.25H12.75C13.1478 5.25 13.5294 5.40804 13.8107 5.68934C14.092 5.97064 14.25 6.35218 14.25 6.75V7.125C14.25 7.22446 14.2895 7.31984 14.3598 7.39017C14.4302 7.46049 14.5255 7.5 14.625 7.5C14.7245 7.5 14.8198 7.53951 14.8902 7.60983C14.9605 7.68016 15 7.77554 15 7.875V10.125C15 10.2245 14.9605 10.3198 14.8902 10.3902C14.8198 10.4605 14.7245 10.5 14.625 10.5C14.5255 10.5 14.4302 10.5395 14.3598 10.6098C14.2895 10.6802 14.25 10.7755 14.25 10.875V11.25C14.25 11.6478 14.092 12.0294 13.8107 12.3107C13.5294 12.592 13.1478 12.75 12.75 12.75H4.5C4.10218 12.75 3.72064 12.592 3.43934 12.3107C3.15804 12.0294 3 11.6478 3 11.25V6.75C3 6.35218 3.15804 5.97064 3.43934 5.68934C3.72064 5.40804 4.10218 5.25 4.5 5.25Z" stroke="#C69006" stroke-linecap="round" stroke-linejoin="round"/>
-                          </svg>
-                          Headset Battery</div>
-                        <div>100%</div>
-                      </div>
-                      <div style="font-size:10px" class="d-flex justify-content-between align-items-center" >
-                          <div><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M5.25 7.5V10.5M7.5 7.5V10.5M9.75 7.5V10.5M12 7.5V10.5M4.5 5.25H12.75C13.1478 5.25 13.5294 5.40804 13.8107 5.68934C14.092 5.97064 14.25 6.35218 14.25 6.75V7.125C14.25 7.22446 14.2895 7.31984 14.3598 7.39017C14.4302 7.46049 14.5255 7.5 14.625 7.5C14.7245 7.5 14.8198 7.53951 14.8902 7.60983C14.9605 7.68016 15 7.77554 15 7.875V10.125C15 10.2245 14.9605 10.3198 14.8902 10.3902C14.8198 10.4605 14.7245 10.5 14.625 10.5C14.5255 10.5 14.4302 10.5395 14.3598 10.6098C14.2895 10.6802 14.25 10.7755 14.25 10.875V11.25C14.25 11.6478 14.092 12.0294 13.8107 12.3107C13.5294 12.592 13.1478 12.75 12.75 12.75H4.5C4.10218 12.75 3.72064 12.592 3.43934 12.3107C3.15804 12.0294 3 11.6478 3 11.25V6.75C3 6.35218 3.15804 5.97064 3.43934 5.68934C3.72064 5.40804 4.10218 5.25 4.5 5.25Z" stroke="#C69006" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                            Controllers Battery</div>
-                          <div>100%</div>
-                        </div>
-                    
-                </div>
-            </div>
-
-            <div class="roomcard col-lg-3 col-md-6" style="width: 15rem;">
-                <img src="{% static 'assets/pngegg 1.png'%}" class="card-img-top" style="border-radius: 8px 8px 0 0;" alt="...">
-                <div class="card-content" style="display: block;padding: 20px;">
-                    <div class="d-flex justify-content-between align-items-center" >
-                        <div>Meta Quest 3</div>
-                        <div class="headsetmodel" >112476947</div>
-                      </div>
-                      <div style="font-size:10px" class="d-flex justify-content-between align-items-center" >
-                        <div><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M5.25 7.5V10.5M7.5 7.5V10.5M9.75 7.5V10.5M12 7.5V10.5M4.5 5.25H12.75C13.1478 5.25 13.5294 5.40804 13.8107 5.68934C14.092 5.97064 14.25 6.35218 14.25 6.75V7.125C14.25 7.22446 14.2895 7.31984 14.3598 7.39017C14.4302 7.46049 14.5255 7.5 14.625 7.5C14.7245 7.5 14.8198 7.53951 14.8902 7.60983C14.9605 7.68016 15 7.77554 15 7.875V10.125C15 10.2245 14.9605 10.3198 14.8902 10.3902C14.8198 10.4605 14.7245 10.5 14.625 10.5C14.5255 10.5 14.4302 10.5395 14.3598 10.6098C14.2895 10.6802 14.25 10.7755 14.25 10.875V11.25C14.25 11.6478 14.092 12.0294 13.8107 12.3107C13.5294 12.592 13.1478 12.75 12.75 12.75H4.5C4.10218 12.75 3.72064 12.592 3.43934 12.3107C3.15804 12.0294 3 11.6478 3 11.25V6.75C3 6.35218 3.15804 5.97064 3.43934 5.68934C3.72064 5.40804 4.10218 5.25 4.5 5.25Z" stroke="#C69006" stroke-linecap="round" stroke-linejoin="round"/>
-                          </svg>
-                          Headset Battery</div>
-                        <div>100%</div>
-                      </div>
-                      <div style="font-size:10px" class="d-flex justify-content-between align-items-center" >
-                          <div><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M5.25 7.5V10.5M7.5 7.5V10.5M9.75 7.5V10.5M12 7.5V10.5M4.5 5.25H12.75C13.1478 5.25 13.5294 5.40804 13.8107 5.68934C14.092 5.97064 14.25 6.35218 14.25 6.75V7.125C14.25 7.22446 14.2895 7.31984 14.3598 7.39017C14.4302 7.46049 14.5255 7.5 14.625 7.5C14.7245 7.5 14.8198 7.53951 14.8902 7.60983C14.9605 7.68016 15 7.77554 15 7.875V10.125C15 10.2245 14.9605 10.3198 14.8902 10.3902C14.8198 10.4605 14.7245 10.5 14.625 10.5C14.5255 10.5 14.4302 10.5395 14.3598 10.6098C14.2895 10.6802 14.25 10.7755 14.25 10.875V11.25C14.25 11.6478 14.092 12.0294 13.8107 12.3107C13.5294 12.592 13.1478 12.75 12.75 12.75H4.5C4.10218 12.75 3.72064 12.592 3.43934 12.3107C3.15804 12.0294 3 11.6478 3 11.25V6.75C3 6.35218 3.15804 5.97064 3.43934 5.68934C3.72064 5.40804 4.10218 5.25 4.5 5.25Z" stroke="#C69006" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                            Controllers Battery</div>
-                          <div>100%</div>
-                        </div>
-                    
-                </div>
-            </div>
-
+            {% endfor %}
         </div>
+        
         
 
        

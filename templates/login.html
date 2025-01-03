@@ -18,15 +18,15 @@
 </head>
 
 <body>
-    <div class="login-wrapper">
+   <div class="login-wrapper">
         <div class="logo-container"><a href="/">
                 <img src="{%static 'assets/Group.png'%}" alt="" loading="lazy" class="login-brand-logo">
             </a>
         </div>
-        <form action="" id="loginbtn" method="post" >
+        <form action="" id="LoginForm" method="POST" >
          {% csrf_token %}
-            <label class="login-group" >Username
-                <input class="login-input" type="text" required name="username" placeholder="Username" id="username" />
+            <label class="login-group" >Tablet S.No
+                <input class="login-input" type="text" required name="serialno" placeholder="SN-12345678" id="serialno" />
             </label>
             <label class="login-group" style="position: relative;">
                 Password
@@ -36,8 +36,6 @@
             <p class="error-text" id="error" ></p>
 
     <button type="submit" class="login-btn">Login</button>
-
-          
 
         </form>
         <div class="modal fade" id="ticketsuccessModal" tabindex="-1" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">

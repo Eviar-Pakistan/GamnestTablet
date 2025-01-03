@@ -34,23 +34,28 @@ function getCookie(name) {
 }
 const csrftoken = getCookie('csrftoken');
 
+document.addEventListener("DOMContentLoaded", () => {
+  const savedSerialNo = localStorage.getItem("serialNo");
+  if (savedSerialNo) {
+    // document.getElementById("serialno").value = savedSerialNo;
+  }
+});
 
-
-const loginbtn = document.getElementById("loginbtn");
+const LoginForm = document.getElementById("LoginForm");
 const error = document.getElementById("error");
 
-loginbtn && loginbtn.addEventListener("submit", (e) => {
+LoginForm && LoginForm.addEventListener("submit", (e) => {
   e.preventDefault();
 
-  const username = document.getElementById("username").value;
+  const serialNo = document.getElementById("serialno").value;
   const password = document.getElementById("password").value;
 
-  if (!username || !password) {
-    error.textContent = "Username or Password Required";
+  if (!serialNo || !password) {
+    error.textContent = "Serial No or Password Required";
     return;
   }
 
-  const data = { username: username, password: password };
+  const data = { serialNo: serialNo, password: password };
 
   fetch('/', {
     method: 'POST',
@@ -63,10 +68,7 @@ loginbtn && loginbtn.addEventListener("submit", (e) => {
     .then(response => response.json())
     .then(data => {
       if (data.success) {
-        // If login is successful and user has the right permission
-        localStorage.setItem('role', data.role);
-        localStorage.setItem('permissions', JSON.stringify(data.permissions));
-
+        localStorage.setItem("serialNo", serialNo);
         const successModalElement = document.getElementById('ticketsuccessModal');
         const successmodal = new bootstrap.Modal(successModalElement);
         successmodal.show();
@@ -74,11 +76,11 @@ loginbtn && loginbtn.addEventListener("submit", (e) => {
         
         setTimeout(() => {
           successmodal.hide();
-          window.location.href = "index";  // Redirect to index page after success
+          window.location.href = "index";
         }, 500);
 
       } else {
-        // Show error modal if login fails
+       
         const erromodal = new bootstrap.Modal(document.getElementById('ticketerrorModal'));
         erromodal.show();
         document.getElementById('ticketerror').textContent = data.message || "Invalid credentials";
@@ -94,6 +96,8 @@ loginbtn && loginbtn.addEventListener("submit", (e) => {
 
 
 // =======================================Login functionality==================================//
+
+
 
 const uncollapseli = document.getElementById("uncollapseli")
 const collapseli = document.getElementById("collapseli")
@@ -162,28 +166,27 @@ playbtn && playbtn.addEventListener("click",()=>{
 gamesection.style.display="none"
  playerform.style.display="block"
 })
-document.addEventListener("DOMContentLoaded", function() {
-  // Get all the card images
+document.addEventListener("DOMContentLoaded", function () {
   const cardImages = document.querySelectorAll('.card .card-img-top');
 
-
-  // Loop through each card image and add click event
   cardImages.forEach((img) => {
-      img.addEventListener('click', function() {
-          // Get the card content of the corresponding card
-          const cardContent = this.nextElementSibling;
-          
-          // Toggle visibility of card content
-          if (cardContent.style.display === 'none' || cardContent.style.display === '') {
-              cardContent.style.display = 'block'; 
-           
-
-          } else {
-              cardContent.style.display = 'none';  
-          }
+    img.addEventListener('click', function () {
+      const allCardContents = document.querySelectorAll('.card-content');
+      allCardContents.forEach((content) => {
+        content.style.display = 'none';
       });
+
+      const cardContent = this.nextElementSibling;
+
+      if (cardContent.style.display === 'none' || cardContent.style.display === '') {
+        cardContent.style.display = 'block';
+      } else {
+        cardContent.style.display = 'none';
+      }
+    });
   });
 });
+
 
 const games = document.getElementById("games")
 
