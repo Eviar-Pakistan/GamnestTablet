@@ -119,203 +119,268 @@ collapseli && collapseli.addEventListener("click",()=>{
 })
 
 
-const addMore = document.getElementById("addmore");
-const addMoreData = document.getElementById("addmoredata");
+
+const addMoreButton = document.getElementById("addmore");
+const playerList = document.getElementById("playerlist");
 const playerContinue = document.getElementById("playercontinue");
-const teamsForm = document.getElementById("teamsform");
-const playerForm = document.getElementById("playerform");
-const teamContinue = document.getElementById("teamcontinue");
-const gameForm = document.getElementById("gameform");
-const finalSummary = document.getElementById("finalsummary");
+const playerForm = document.getElementById("playerform")
+const teamsForm = document.getElementById("teamsform")
+const gameform = document.getElementById("gameform")
+
+let playerCount = 1; 
+let selectedHeadsets = new Set(); 
+
+// Function to populate headset options
+function createHeadsetOptions() {
+    return headsets.map((headset) => {
+        return `<option value="${headset.serialNo}">${headset.name}</option>`;
+    }).join("");
+}
+
+// Add new player field
+addMoreButton && addMoreButton.addEventListener("click", () => {
+    playerCount++;
+    const playerRow = `
+        <div class="d-flex justify-content-center gap-5 align-center player-row" id="player-row-${playerCount}">
+            <div class="mt-3">
+                <label class="allLbl">Player ${playerCount}</label>
+                <input type="text" placeholder="Enter player name" class="allinput player-name" data-player-id="${playerCount}">
+            </div>
+            <div class="mt-3" style="width: 45%;">
+                <label class="allLbl">Headsets</label>
+                <select id="headset-${playerCount}" class="allinput headset-select" data-player-id="${playerCount}">
+                    <option value="default" disabled selected>Select Headset</option>
+                    ${createHeadsetOptions()}
+                </select>
+            </div>
+        </div>`;
+    playerList.insertAdjacentHTML("beforeend", playerRow);
+
+    // Add event listener for the new headset dropdown
+    const newHeadsetSelect = document.getElementById(`headset-${playerCount}`);
+    newHeadsetSelect.addEventListener("change", handleHeadsetSelection);
+});
+
+function handleHeadsetSelection(event) {
+  const headsetValue = event.target.value; // The newly selected headset's serialNo
+  const playerId = event.target.dataset.playerId; // The ID of the player making the selection
+  const playerSelect = document.querySelector(`select[data-player-id="${playerId}"]`);
+
+  if (selectedHeadsets.has(headsetValue)) {
+      alert("This headset is already assigned to another player. Please choose a unique headset.");
+      event.target.value = "default"; 
+      return;
+  }
+
+  const previousSelection = playerSelect.dataset.selectedHeadset;
+  if (previousSelection && selectedHeadsets.has(previousSelection)) {
+      selectedHeadsets.delete(previousSelection);
+  }
+
+  if (headsetValue !== "default") {
+      selectedHeadsets.add(headsetValue);
+      playerSelect.dataset.selectedHeadset = headsetValue;
+  } else {
+      playerSelect.dataset.selectedHeadset = "";
+  }
+
+  console.log("Updated selectedHeadsets:", selectedHeadsets);
+}
 
 let players = [];
-let selectedHeadsets = []; // Array to store selected headsets
-let teams = []; // Array to store teams
-var playerCount;
 
-// Add more player fields
-addMore && addMore.addEventListener("click", () => {
-  playerCount = document.querySelectorAll(".player-name").length + 1; // Dynamic count
-  const playerField = `
-    <div class="d-flex justify-content-center gap-5 align-center player-row" id="player-row-${playerCount}">
-      <div class="mt-3">
-        <label class="allLbl">Player ${playerCount}</label>
-        <input type="text" placeholder="Enter player name" class="allinput player-name" data-player-id="${playerCount}">
-      </div>
-      <div class="mt-3" style="width: 45%;">
-        <label class="allLbl">Headsets</label>
-        <select id="headset-${playerCount}" class="allinput headset-select" data-player-id="${playerCount}">
-          <option value="default" disabled selected>Select Headset</option>
-          ${getHeadsetOptions()}
-        </select>
-      </div>
-    </div>`;
-  addMoreData.insertAdjacentHTML("beforeend", playerField);
 
-  // Add event listener for newly added headset dropdown
-  const newHeadsetSelect = document.querySelector(`#headset-${playerCount}`);
-  newHeadsetSelect.addEventListener("change", (event) => handleHeadsetSelection(event));
-});
-
-// Generate headset dropdown options
-function getHeadsetOptions() {
-  return headsets
-    .map(
-      (headset) =>
-        `<option value="${headset.serialNo}" data-headset-name="${headset.name}">${headset.name}</option>`
-    )
-    .join("");
-}
-
-// Handle headset selection
-function handleHeadsetSelection(event) {
-  const headsetValue = event.target.value;
-  const playerId = event.target.dataset.playerId;
-
-  // Remove previous selection for this player (if any)
-  const previousSelectionIndex = selectedHeadsets.findIndex(
-    (entry) => entry.playerId === playerId
-  );
-  if (previousSelectionIndex !== -1) {
-    selectedHeadsets.splice(previousSelectionIndex, 1);
-  }
-
-  // Add the new selection
-  if (headsetValue !== "default") {
-    selectedHeadsets.push({ playerId, headsetValue });
-  }
-
-  console.log("Selected Headsets:", selectedHeadsets);
-}
-
-// Player Continue Button
 playerContinue && playerContinue.addEventListener("click", () => {
-  const playerNames = document.querySelectorAll(".player-name");
-  const headsetSelections = document.querySelectorAll(".headset-select");
+    const playerNames = document.querySelectorAll(".player-name");
+    const headsetSelects = document.querySelectorAll(".headset-select");
 
-  players = [];
-  let valid = true;
-  let errorMessage = "";
+    let valid = true;
+    let errorMessage = "";
 
-  // Validate each player
-  playerNames.forEach((input) => {
-    const playerId = input.dataset.playerId;
-    const playerName = input.value.trim();
-    const headsetSelect = document.querySelector(`#headset-${playerId}`);
-    const headsetValue = headsetSelect.value;
-    const headsetName = headsetSelect.options[headsetSelect.selectedIndex]?.text;
+    playerNames.forEach((input, index) => {
+        const playerId = input.dataset.playerId;
+        const playerName = input.value.trim();
+        const headsetSelect = document.querySelector(`#headset-${playerId}`);
+        const headsetValue = headsetSelect.value;
+        const headsetName = headsetSelect.options[headsetSelect.selectedIndex]?.text;
 
-    // Validate the player's name and headset selection
-    if (!playerName) {
-      valid = false;
-      errorMessage = "Please enter a name for each player.";
-    } else if (headsetValue === "default") {
-      valid = false;
-      errorMessage = "Please select a headset for each player.";
-    } else if (
-      selectedHeadsets.some(
-        (entry) =>
-          entry.headsetValue === headsetValue && entry.playerId !== playerId
-      )
-    ) {
-      valid = false;
-      errorMessage = "Ensure each player has a unique headset selected.";
-    }
+        if (!playerName) {
+            valid = false;
+            errorMessage = `Player ${index + 1} name is missing.`;
+            return;
+        }
 
-    // If the validation fails, exit the loop
-    if (!valid) {
-      return; // Early exit
-    }
+        if (headsetValue === "default") {
+            valid = false;
+            errorMessage = `Player ${index + 1} has not selected a headset.`;
+            return;
+        }
 
-    // Add the player to the list
-    players.push({
-      id: playerId,
-      name: playerName,
-      headset: { serialNo: headsetValue, name: headsetName },
+        players.push({
+            id: playerId,
+            name: playerName,
+            headset: { serialNo: headsetValue, name: headsetName },
+        });
+        
     });
-  });
 
-  // Ensure there are at least 2 players
-  if (playerCount < 2) {
-    valid = false;
-    errorMessage = "You must add at least 2 players.";
-  }
-
-  // Show the error message if validation failed
-  if (!valid) {
-    alert(errorMessage);
-  } else {
-    // Add players to team selection dropdown
-    const teamPlayerSelect = document.querySelector("#teamplayerselect");
-    teamPlayerSelect.innerHTML = players
-      .map(
-        (player) =>
-          `<option value="${player.id}" data-headset="${player.headset.name}">${player.name}</option>`
-      )
-      .join("");
-
-    // Validation passed, proceed to the next form
-    playerForm.style.display = "none";
-    teamsForm.style.display = "block";
-  }
-});
-
-// Team Continue Button
-teamContinue && teamContinue.addEventListener("click", () => {
-  const teamInputs = document.querySelectorAll(".team-name");
-  const teamPlayerSelects = document.querySelectorAll(".team-player-select");
-
-  teams = [];
-  let valid = true;
-
-  teamInputs.forEach((input, index) => {
-    const teamName = input.value.trim();
-    const playerSelect = teamPlayerSelects[index];
-    const selectedPlayers = Array.from(playerSelect.selectedOptions).map((opt) => opt.value);
-
-    if (!teamName || selectedPlayers.length < 2) {
-      valid = false;
-      alert("Each team must have a name and at least 2 players.");
-      return;
+    if (!valid) {
+        alert(errorMessage);
     }
-
-    teams.push({ name: teamName, players: selectedPlayers });
-  });
-
-  if (valid) {
-    teamsForm.style.display = "none";
-    gameForm.style.display = "block";
-  }
+    else if(players.length < 2){
+      alert("Atleast two players are required")
+    }
+    else {
+        console.log("Players with unique headsets:", players);
+        alert("Players added successfully.");
+        playerForm.style.display = "none";
+    teamsForm.style.display = "block";
+    }
 });
 
-// Game Continue Button
-document.getElementById("gamecontinue")?.addEventListener("click", () => {
-  const gameSelect = document.getElementById("selectedgames");
-  const selectedGame = gameSelect.value;
+const teamData = document.getElementById("teamdata");
+const teamsContinue = document.getElementById("teamscontinue");
+let teamCount = 2;
+let selectedPlayers = new Set(); 
+
+function createPlayerOptions(players) {
+    return players.map(player => {
+        // Disable players that are already selected
+        const disabled = selectedPlayers.has(player.name) ? 'disabled' : '';
+        return `<option value="${player.name}" ${disabled}>${player.name}</option>`;
+    }).join("");
+}
+
+function populateTeamsForm(players) {
+    teamData.innerHTML = ""; 
+
+    for (let i = 1; i <= teamCount; i++) {
+        const teamRow = `
+            <div class="d-flex justify-content-center gap-5 align-center team-row" id="team-row-${i}">
+                <div class="mt-3">
+                    <label class="allLbl">Team ${i}</label>
+                    <input type="text" placeholder="Enter team name" class="allinput team-name" data-team-id="${i}">
+                </div>
+                <div class="mt-3" style="width: 45%;">
+                    <label class="allLbl">Players</label>
+                    <select class="allinput team-player-select" data-team-id="${i}" multiple onchange="handlePlayerSelection(event)">
+                        <option value="" disabled>Select players</option>
+                        ${createPlayerOptions(players)}
+                    </select>
+                </div>
+            </div>`;
+        teamData.insertAdjacentHTML("beforeend", teamRow);
+    }
+}
+
+function handlePlayerSelection(event) {
+    const selectedOptions = Array.from(event.target.selectedOptions).map(option => option.value);
+    const teamId = event.target.dataset.teamId;
+
+    selectedOptions.forEach(player => selectedPlayers.add(player));
+
+    updatePlayerOptions();
+
+    console.log("Selected Players for this Team:", selectedOptions);
+    console.log("All Selected Players:", selectedPlayers);
+}
+
+function updatePlayerOptions() {
+    const playerSelects = document.querySelectorAll(".team-player-select");
+
+    playerSelects.forEach(select => {
+        const options = select.querySelectorAll("option");
+        
+        options.forEach(option => {
+            if (selectedPlayers.has(option.value)) {
+                option.disabled = true;
+            } else {
+                option.disabled = false;
+            }
+        });
+    });
+}
+
+let teams = [];
+
+teamsContinue && teamsContinue.addEventListener("click", () => {
+    const teamNames = document.querySelectorAll(".team-name");
+    const teamPlayerSelects = document.querySelectorAll(".team-player-select");
+
+    let valid = true;
+    let errorMessage = "";
+
+    teamNames.forEach((input, index) => {
+        const teamId = input.dataset.teamId;
+        const teamName = input.value.trim();
+        const selectedPlayersForTeam = Array.from(teamPlayerSelects[index].selectedOptions).map(option => option.value);
+
+        if (!teamName) {
+            valid = false;
+            errorMessage = `Team ${index + 1} name is missing.`;
+            return;
+        }
+
+        if (selectedPlayersForTeam.length === 0) {
+            valid = false;
+            errorMessage = `Team ${index + 1} must have at least one player selected.`;
+            return;
+        }
+
+        teams.push({
+            id: teamId,
+            name: teamName,
+            players: selectedPlayersForTeam,  
+        });
+    });
+
+    if (!valid) {
+        alert(errorMessage);
+    } else {
+        console.log("Teams created with selected players:", teams);
+        alert("Teams added successfully.");
+        teamsForm.style.display="none"
+        gameform.style.display="block"
+        
+    }
+});
+
+playerContinue.addEventListener("click", () => {
+    if (players.length >= 2) {
+        playerForm.style.display = "none";
+        teamsForm.style.display = "block";
+        populateTeamsForm(players);
+    }
+});
+
+const gameContinue = document.getElementById("gamecontinue")
+
+gameContinue && gameContinue.addEventListener("click", () => {
+  const selectedGameElement = document.getElementById("selectedgames");
+  selectedGame = selectedGameElement.value;
 
   if (selectedGame === "default") {
-    alert("Select a game to continue.");
-    return;
+      alert("Please select a game.");
+      return;
   }
 
-  // Prepare final summary
-  let summaryHTML = `<h3>Game Summary</h3>`;
-  summaryHTML += `<p>Selected Game: ${selectedGame}</p>`;
-  teams.forEach((team) => {
-    summaryHTML += `<h4>Team: ${team.name}</h4>`;
-    summaryHTML += `<ul>`;
-    team.players.forEach((playerId) => {
-      const player = players.find((p) => p.id === playerId);
-      summaryHTML += `<li>${player.name} (Headset: ${player.headset.name})</li>`;
-    });
-    summaryHTML += `</ul>`;
-  });
+  // Combine teams and selected game data into the final object
+  const finalData = {
+      game: selectedGame,
+      teams: teams.map(team => ({
+          teamName: team.name,
+          players: players.map(player => ({
+              name: player.name,
+              headsets: player.headset.serialNo,
+          })),
+      })),
+  };
 
-  finalSummary.innerHTML = summaryHTML;
-  gameForm.style.display = "none";
-  finalSummary.style.display = "block";
+  console.log("Final Data:", finalData);
+  alert("Game Started!");
+
+  // You can now send `finalData` to your server or process it further
 });
-
 
 document.addEventListener("DOMContentLoaded", function () {
   const cardImages = document.querySelectorAll('.card .card-img-top');
@@ -391,3 +456,20 @@ addticket && addticket.addEventListener("click",()=>{
 ticketcancel && ticketcancel.addEventListener("click",()=>{
   supportform.style.display="none";
 })
+
+const logoutbtn = document.getElementById("logoutbtn");
+
+logoutbtn && logoutbtn.addEventListener("click", () => {
+  localStorage.clear();
+
+  window.location.replace("/");
+
+  setTimeout(() => {
+    window.history.pushState(null, "", window.location.href);
+    
+    window.onpopstate = function() {
+      window.history.go(1); 
+    };
+  }, 100);
+});
+

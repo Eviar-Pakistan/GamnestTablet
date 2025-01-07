@@ -202,3 +202,7 @@ def support(request):
         'paginated_ongoing_tickets': paginated_ongoing_tickets,
         'paginated_new_tickets': paginated_new_tickets,
         })
+
+def setting(request):
+
+    return render(request,"setting.html")

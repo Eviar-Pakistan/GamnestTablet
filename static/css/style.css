@@ -370,6 +370,15 @@ body{
   color: #fff;
   display: inline-block;
 }
+.logoutbtn {
+  background-color: #C69006;
+  padding: 10px 10px 10px 10px;
+  border-radius: 4px;
+  border: none;
+  font-size: 12px;
+  color: #fff;
+  display: inline-block;
+}
 
 .roomcard {
   padding: 0px 1px 20px 1px;
