@@ -623,6 +623,9 @@ video {
   padding-bottom:15px
 
 }
+.text-muted{
+  text-decoration: none;
+}
 .supportnavlinkactive{
   color: rgba(249, 193, 52, 1);
   border-bottom: 3px solid #C69006;

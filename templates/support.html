@@ -30,18 +30,58 @@
                                 aria-label="Toggle navigation">
                                 <i class="fas fa-bars" style="color: #fff;"></i>
                             </button>
-                            <div class="collapse navbar-collapse " id="navbarNav">
+                                <div class="collapse navbar-collapse " id="navbarNav">
                                 <ul class="navbar-nav ms-auto align-items-md-center mt-2 align-items-end">
                                     <li class="nav-item">
                                         <div class="dropdown-center">
-                                            <button class="notiBell" type="button">
+                                            <button class="notiBell" type="button" data-bs-toggle="modal" data-bs-target="#newNotification" aria-label="New Notification" data-bs-toggle="dropdown" aria-expanded="false" >
                                                 <span class="d-inline-block position-relative">
                                                     <img src="{% static 'assets/ic_bell.png'%}" />
-                                                    <span class="notiBadge"></span>
+                                                    {% if unseen_notifications > 0 %}
+                                                        <span class="notiBadge">{{ unseen_notifications }}</span>
+                                                    {% endif %}
+                                                   
                                                 </span>
                                             </button>
                                     </li>
                                 </ul>
+                                <div class="modal fade" id="newNotification" tabindex="-1" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content">
+                                            <div class="modal-body p-3">
+                                                <div class="notificationModalheader">
+                                                    <div>                                                  
+                                                        <span id="mark-selected-seen" class="btn btn-link mark-seen">Mark Selected as Seen</span>
+                                                    </div>
+                                                    <div class="text-white" > Notifications</div>
+                                                    <div>
+                                                        <span id="mark-all-seen" class="btn btn-link mark-seen">Mark All as Seen</span>
+                                                    </div>
+                                                    
+                                                </div>
+                                                <p class="error-text" id="notierror"></p>
+                                                <ul id="ticket-list">
+                                                    {% for notification in notifications %}
+                                                        <li class="border-box mt-3" data-id="{{ notification.id }}">
+                                                            <div class="d-flex align-items-start justify-content-between">
+                                                                <div>
+                                                                    <div class="d-flex align-items-center">
+                                                                        <input type="checkbox" class="notification-checkbox" style="margin-right:10px" value="{{ notification.id }}">
+                                                                        <span class="ticketIcon"></span>
+                                                                        <h3 class="ticketHeading">Ticket# {{ notification.ticket_id }}</h3>
+                                                                    </div>
+                                                                </div>
+                                                                <div>
+                                                                    <span class="ticketPosting">Posted at {{ notification.created_at }}</span>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                    {% endfor %}
+                                                </ul>                
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </nav>
@@ -224,7 +264,7 @@
 
 
                     <li>
-                        <a href="./room.html" >
+                        <a href="{% url 'room' %}" >
                             <svg class="svgNavIcon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path
                                     d="M12 12C13.1935 12 14.3381 11.5259 15.182 10.682C16.0259 9.83807 16.5 8.69347 16.5 7.5C16.5 6.30653 16.0259 5.16193 15.182 4.31802C14.3381 3.47411 13.1935 3 12 3C10.8065 3 9.66193 3.47411 8.81802 4.31802C7.97411 5.16193 7.5 6.30653 7.5 7.5C7.5 8.69347 7.97411 9.83807 8.81802 10.682C9.66193 11.5259 10.8065 12 12 12ZM12 13.5C10.4087 13.5 8.88258 12.8679 7.75736 11.7426C6.63214 10.6174 6 9.0913 6 7.5C6 5.9087 6.63214 4.38258 7.75736 3.25736C8.88258 2.13214 10.4087 1.5 12 1.5C13.5913 1.5 15.1174 2.13214 16.2426 3.25736C17.3679 4.38258 18 5.9087 18 7.5C18 9.0913 17.3679 10.6174 16.2426 11.7426C15.1174 12.8679 13.5913 13.5 12 13.5Z" />
@@ -238,7 +278,7 @@
                     </li>
 
                     <li>
-                        <a href="./headset.html" >
+                        <a href="{% url 'headset' %}" >
                             <svg class="svgNavIcon" width="28" height="28" viewBox="0 0 28 28" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
                                 <g clip-path="url(#clip0_5352_8424)">
@@ -256,7 +296,7 @@
                     </li>
 
                     <li>
-                        <a href="support.html" class="active">
+                        <a href="{% url 'support' %}" class="active">
                             <svg class="svgNavIcon" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path
                                     d="M12.5 2C6.986 2 2.5 6.486 2.5 12V16.143C2.5 17.167 3.397 18 4.5 18H5.5C5.76522 18 6.01957 17.8946 6.20711 17.7071C6.39464 17.5196 6.5 17.2652 6.5 17V11.857C6.5 11.5918 6.39464 11.3374 6.20711 11.1499C6.01957 10.9624 5.76522 10.857 5.5 10.857H4.592C5.148 6.987 8.478 4 12.5 4C16.522 4 19.852 6.987 20.408 10.857H19.5C19.2348 10.857 18.9804 10.9624 18.7929 11.1499C18.6054 11.3374 18.5 11.5918 18.5 11.857V18C18.5 19.103 17.603 20 16.5 20H14.5V19H10.5V22H16.5C18.706 22 20.5 20.206 20.5 18C21.603 18 22.5 17.167 22.5 16.143V12C22.5 6.486 18.014 2 12.5 2Z" />
@@ -305,56 +345,73 @@
         </div>
   
         <div class="supportnavLinks" >
-            <div class="supportnavitems {% if status_filter == 'all' %}supportnavlinkactive {% endif %}" >
+            <a href="?status=all" class="text-muted">
+            <div class="supportnavitems {% if status_filter == 'all' %}supportnavlinkactive{% endif %}">
+             
                 <svg width="19" height="20" viewBox="0 0 19 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M13.4327 17.0834H5.53339C3.1636 17.0834 1.58374 15.8334 1.58374 12.9167V7.08341C1.58374 4.16675 3.1636 2.91675 5.53339 2.91675H13.4327C15.8025 2.91675 17.3823 4.16675 17.3823 7.08341V12.9167C17.3823 15.8334 15.8025 17.0834 13.4327 17.0834Z" stroke="#797A7C" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M13.4327 7.5L10.9603 9.58333C10.1466 10.2667 8.81165 10.2667 7.99803 9.58333L5.53345 7.5" stroke="#797A7C" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            <a href="?status=all" class="text-muted">All Tickets</a>
-       </div>
-       <div class="supportnavitems {% if status_filter == 'ongoing' %}supportnavlinkactive{% endif %}">
-        <svg width="18" height="20" viewBox="0 0 18 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M1.49976 7.08341C1.49976 4.16675 2.99976 2.91675 5.24976 2.91675H12.7498C14.9998 2.91675 16.4998 4.16675 16.4998 7.08341V12.9167C16.4998 15.8334 14.9998 17.0834 12.7498 17.0834H5.24976" stroke="#797A7C" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M12.7498 7.5L10.4023 9.58333C9.62975 10.2667 8.36225 10.2667 7.58975 9.58333L5.24976 7.5" stroke="#797A7C" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M1.49976 13.75H5.99976" stroke="#797A7C" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M1.49976 10.4167H3.74976" stroke="#797A7C" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            
-            <a href="?status=ongoing" class="text-muted">On-Going</a>
-       </div>
-       <div class="supportnavitems {% if status_filter == 'resolved' %}supportnavlinkactive{% endif %}">
-        <svg width="18" height="20" viewBox="0 0 18 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M1.49976 7.08341C1.49976 4.16675 2.99976 2.91675 5.24976 2.91675H12.7498C14.9998 2.91675 16.4998 4.16675 16.4998 7.08341V12.9167C16.4998 15.8334 14.9998 17.0834 12.7498 17.0834H5.24976" stroke="#797A7C" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M12.7498 7.5L10.4023 9.58333C9.62975 10.2667 8.36225 10.2667 7.58975 9.58333L5.24976 7.5" stroke="#797A7C" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M1.49976 13.75H5.99976" stroke="#797A7C" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M1.49976 10.4167H3.74976" stroke="#797A7C" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            
-            <a href="?status=resolved" class="text-muted">Resolved</a>
-       </div>
+                    <path d="M13.4327 17.0834H5.53339C3.1636 17.0834 1.58374 15.8334 1.58374 12.9167V7.08341C1.58374 4.16675 3.1636 2.91675 5.53339 2.91675H13.4327C15.8025 2.91675 17.3823 4.16675 17.3823 7.08341V12.9167C17.3823 15.8334 15.8025 17.0834 13.4327 17.0834Z" stroke="#797A7C" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M13.4327 7.5L10.9603 9.58333C10.1466 10.2667 8.81165 10.2667 7.99803 9.58333L5.53345 7.5" stroke="#797A7C" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                All Tickets
+            </div>
+        </a>
+        <a href="?status=ongoing" class="text-muted">
+            <div class="supportnavitems {% if status_filter == 'ongoing' %}supportnavlinkactive{% endif %}">
+                <svg width="18" height="20" viewBox="0 0 18 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M1.49976 7.08341C1.49976 4.16675 2.99976 2.91675 5.24976 2.91675H12.7498C14.9998 2.91675 16.4998 4.16675 16.4998 7.08341V12.9167C16.4998 15.8334 14.9998 17.0834 12.7498 17.0834H5.24976" stroke="#797A7C" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M12.7498 7.5L10.4023 9.58333C9.62975 10.2667 8.36225 10.2667 7.58975 9.58333L5.24976 7.5" stroke="#797A7C" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M1.49976 13.75H5.99976" stroke="#797A7C" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M1.49976 10.4167H3.74976" stroke="#797A7C" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+              On-Going
+            </div>
+        </a>
+        <a href="?status=resolved" class="text-muted">
+            <div class="supportnavitems {% if status_filter == 'resolved' %}supportnavlinkactive{% endif %}">
+                <svg width="18" height="20" viewBox="0 0 18 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M1.49976 7.08341C1.49976 4.16675 2.99976 2.91675 5.24976 2.91675H12.7498C14.9998 2.91675 16.4998 4.16675 16.4998 7.08341V12.9167C16.4998 15.8334 14.9998 17.0834 12.7498 17.0834H5.24976" stroke="#797A7C" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M12.7498 7.5L10.4023 9.58333C9.62975 10.2667 8.36225 10.2667 7.58975 9.58333L5.24976 7.5" stroke="#797A7C" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M1.49976 13.75H5.99976" stroke="#797A7C" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M1.49976 10.4167H3.74976" stroke="#797A7C" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    
+               Resolved
+            </div>
+        </a>
         </div>
         <div class="supportunderline" ></div>
 
         <div class="supportcard-container">
-            {% for ticket in paginated_tickets %}
-            <div class="supportcard">
-                <div class="d-flex align-items-center gap-3"> 
-                    <div class="supportcircle"></div>
-                    <div class="fw-semibold fs-6 text-white">Ticket# {{ ticket.id }}</div>
-                    <div class="text-muted" style="font-size: 14px; margin-left: auto;">Posted at {{ ticket.created_at }}</div>
+            {% if paginated_tickets %}
+                {% for ticket in paginated_tickets %}
+                <div class="supportcard">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="supportcircle"></div>
+                        <div class="fw-semibold fs-6 text-white">Ticket# {{ ticket.id }}</div>
+                        <div class="text-muted" style="font-size: 14px; margin-left: auto;">
+                            Posted at {{ ticket.created_at }}
+                        </div>
+                    </div>
+                    <div class="text-white pt-2" style="font-size: 14px;">{{ ticket.title }}</div>
+                    <div class="text-muted pt-1" style="font-size: 13px;">{{ ticket.description }}</div>
                 </div>
-                <div class="text-white pt-2" style="font-size: 14px;">{{ ticket.title }}</div>
-                <div class="text-muted pt-1" style="font-size: 13px;">{{ ticket.description }}</div>
-            </div>
-            {% endfor %}
+                {% endfor %}
+            {% else %}
+                <!-- No Tickets Available Message -->
+                <div class="text-center text-muted mt-5 ">
+                    No tickets available for {{ status_filter | title }} status.
+                </div>
+            {% endif %}
         </div>
+        
+        
     
         <!-- Pagination -->
         <div class="d-flex align-items-center justify-content-center gap-5 mt-4" style="cursor: pointer;">
             {% if paginated_tickets.has_previous %}
             <a href="?status={{ status_filter }}&page={{ paginated_tickets.previous_page_number }}" class="text-muted">Previous</a>
             {% endif %}
-            
+        
             <div class="d-flex align-items-center gap-2">
                 {% for num in paginated_tickets.paginator.page_range %}
                     {% if num == paginated_tickets.number %}
@@ -364,11 +421,12 @@
                     {% endif %}
                 {% endfor %}
             </div>
-            
+        
             {% if paginated_tickets.has_next %}
             <a href="?status={{ status_filter }}&page={{ paginated_tickets.next_page_number }}" class="text-white">Next</a>
             {% endif %}
         </div>
+        
 
 
         <div id="supportform" class="supportform" style="display: none" >

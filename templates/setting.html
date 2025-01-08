@@ -25,24 +25,28 @@
                     <nav class="navbar navbar-expand-md headerNav">
                         <div class="container-fluid">
                             
-                            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                            <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse"
                                 data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
                                 aria-label="Toggle navigation">
                                 <i class="fas fa-bars" style="color: #fff;"></i>
                             </button>
                             <div class="collapse navbar-collapse " id="navbarNav">
-                                <ul class="navbar-nav ms-auto align-items-md-center mt-2 align-items-end">
+                                <div class="dropdown-center ms-auto">
+
+                                <ul class="navbar-nav  align-items-md-center  mt-2 align-items-end">
                                     <li class="nav-item">
                                         <div class="dropdown-center">
-                                            <button class="notiBell" type="button">
+                                            <button class="notiBell" type="button" data-bs-toggle="modal" data-bs-target="#newNotification" aria-label="New Notification" data-bs-toggle="dropdown" aria-expanded="false" >
                                                 <span class="d-inline-block position-relative">
                                                     <img src="{% static 'assets/ic_bell.png'%}" />
-                                                    <span class="notiBadge"></span>
+                                                    {% if unseen_notifications > 0 %}
+                                                        <span class="notiBadge">{{ unseen_notifications }}</span>
+                                                    {% endif %}
+                                                   
                                                 </span>
                                             </button>
                                     </li>
                                     <li class="nav-item">
-                                        <div class="dropdown-center">
                                             <button class="logoutbtn" id="logoutbtn" type="button">
                                                 <span class="d-inline-block position-relative text-white">
                                                     <svg width="24" height="24" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -54,6 +58,43 @@
                                                 </span>
                                             </button>
                                     </li>
+                                      <div class="modal fade" id="newNotification" tabindex="-1" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content">
+                                            <div class="modal-body p-3">
+                                                <div class="notificationModalheader">
+                                                    <div>                                                  
+                                                        <span id="mark-selected-seen" class="btn btn-link mark-seen">Mark Selected as Seen</span>
+                                                    </div>
+                                                    <div class="text-white" > Notifications</div>
+                                                    <div>
+                                                        <span id="mark-all-seen" class="btn btn-link mark-seen">Mark All as Seen</span>
+                                                    </div>
+                                                    
+                                                </div>
+                                                <p class="error-text" id="notierror"></p>
+                                                <ul id="ticket-list">
+                                                    {% for notification in notifications %}
+                                                        <li class="border-box mt-3" data-id="{{ notification.id }}">
+                                                            <div class="d-flex align-items-start justify-content-between">
+                                                                <div>
+                                                                    <div class="d-flex align-items-center">
+                                                                        <input type="checkbox" class="notification-checkbox" style="margin-right:10px" value="{{ notification.id }}">
+                                                                        <span class="ticketIcon"></span>
+                                                                        <h3 class="ticketHeading">Ticket# {{ notification.ticket_id }}</h3>
+                                                                    </div>
+                                                                </div>
+                                                                <div>
+                                                                    <span class="ticketPosting">Posted at {{ notification.created_at }}</span>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                    {% endfor %}
+                                                </ul>                
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 </ul>
                             </div>
                         </div>

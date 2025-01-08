@@ -33,7 +33,7 @@ function getCookie(name) {
   return cookieValue;
 }
 const csrftoken = getCookie('csrftoken');
-
+console.log(csrftoken)
 document.addEventListener("DOMContentLoaded", () => {
   const savedSerialNo = localStorage.getItem("serialNo");
   if (savedSerialNo) {
@@ -445,7 +445,7 @@ teamsContinue && teamsContinue.addEventListener("click", () => {
 });
 
 
-playerContinue.addEventListener("click", () => {
+playerContinue && playerContinue.addEventListener("click", () => {
     if (players.length >= 2) {
         playerForm.style.display = "none";
         teamsForm.style.display = "block";
