@@ -157,12 +157,153 @@ body{
   background-color: #C69006;
   color: white;
   font-size: 12px;
-  padding: 6px;
-  border-radius: 100%;
+  padding: 0px 6px; 
+  border-radius: 50%;
   position: absolute;
-  top: -5px;
-  right: 1px;
+  top: -6px;
+  right: -12px;
+  min-width: 20px; 
+  height: 20px;
+  line-height: 20px;
+  text-align: center; 
+  white-space: nowrap; 
+  box-sizing: border-box; 
 }
+.modal-content {
+    background-color: #202224;  /* Light blue background color */
+    color: #333;                 /* Text color inside modal */
+}
+
+.modal-body {
+    background-color: #202224;  /* White background for modal body */
+    color: #555;                 /* Text color inside modal body */
+}
+
+.modal-header {
+    background-color: #202224;  /* Header background color */
+    color: #000;                 /* Text color in the header */
+}
+
+.mark-seen{
+color: #F9C134;
+transition: 0.3s ease all;
+font-size: 12px;
+cursor: pointer;
+}
+.mark-seen:hover{
+color: #039855;
+}
+.notificationModalheader{
+ display: flex;
+ justify-content: space-between;
+ align-items: center;
+ 
+}
+.notiticketwrapper{
+  display: flex;
+ justify-content: center;
+ align-items: center;
+}
+
+/* Base style for the checkbox */
+.notification-checkbox {
+  position: relative;
+  width: 15px; 
+  height: 15px;
+  border-radius: 2px; /* Rounded corners for the checkbox */
+  border: 2px solid #ccc; /* Default border color */
+  background-color: #fff; /* Background color when unchecked */
+  transition: background-color 0.2s ease-in-out, border 0.2s ease-in-out;
+  appearance: none; /* Remove default checkbox style */
+}
+
+/* Style when the checkbox is checked */
+.notification-checkbox:checked {
+  background-color: #F9C134; /* Yellow background when checked */
+  border-color: #F9C134; /* Border color to match the background */
+}
+
+/* Add the checkmark when checked */
+.notification-checkbox:checked::before {
+  content: "\2713"; /* Unicode checkmark character */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* Center the checkmark */
+  font-size: 14px; /* Size of the checkmark */
+  color: white; /* Color of the checkmark */
+  text-align: center;
+  line-height: 16px; /* Adjust to vertically center the checkmark */
+}
+
+/* Hover effect for better interaction */
+.notification-checkbox:hover {
+  cursor: pointer; /* Change cursor to pointer when hovering */
+  border-color: #F9C134; /* Highlight border on hover */
+}
+
+.notification-checkbox:checked:hover {
+  background-color: #f9d334; /* Slightly darker yellow when checked and hovered */
+}
+
+/* Focus effect to remove outline */
+.notification-checkbox:focus {
+  outline: none; /* Removes the outline when the checkbox is focused */
+}
+
+.ticketIcon {
+  background-color: #FAC985;
+  width: 22px;
+  height: 22px;
+  border-radius: 100%;
+}
+
+.ticketHeading {
+  color: #C69006;
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0 10px;
+}
+
+.ticketBadge {
+  background-color: #FECDCA;
+  border-radius: 4px;
+  padding: 5px 10px;
+  color: #F04438;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.ticketPosting {
+  color: #636466;
+  font-size: 12px;
+  font-weight: 500;
+  width: 400px;
+}
+
+.ticketQuestion {
+  color: #202224;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.2;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin: 10px 0;
+}
+
+.ticketPara {
+  color: #4D4E50;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.2;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
 
 #sidebar {
   transition: 0.3s ease;

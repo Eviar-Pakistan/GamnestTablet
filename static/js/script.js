@@ -99,6 +99,97 @@ LoginForm && LoginForm.addEventListener("submit", (e) => {
 
 
 
+// =====================================Notification===============================================//
+const selected_seen = document.getElementById('mark-selected-seen')
+const all_seen = document.getElementById('mark-all-seen')
+
+// Mark selected notifications as seen
+selected_seen && selected_seen.addEventListener('click', function () {
+  const selectedNotifications = Array.from(document.querySelectorAll('.notification-checkbox:checked'))
+      .map(checkbox => checkbox.value); // Collect IDs of checked notifications
+
+  if (selectedNotifications.length > 0) {
+      fetch('/mark-selected-notifications-seen/', {
+          method: "POST",
+          headers: {
+              "Content-Type": "application/json",
+              "X-CSRFToken": csrftoken
+          },
+          body: JSON.stringify({ notification_ids: selectedNotifications })
+      })
+      .then(response => response.json())
+      .then(data => {
+          if (data.status === "success") {
+              selectedNotifications.forEach(id => {
+                  const notificationElement = document.querySelector(`[data-id="${id}"]`);
+                  if (notificationElement) {
+                      notificationElement.remove(); // Remove or visually update the notification
+                  }
+              });
+
+              updateNotificationBadge(selectedNotifications.length);
+          }
+      })
+      .catch(error => console.error("Error:", error));
+  } else {
+      showError("Please select at least one notification.");
+  }
+});
+
+// Mark all notifications as seen
+all_seen && all_seen.addEventListener('click', function () {
+  const allNotifications = Array.from(document.querySelectorAll('.notification-checkbox'))
+      .map(checkbox => checkbox.value); // Collect IDs of all notifications
+
+  if (allNotifications.length > 0) {
+      fetch('/mark-selected-notifications-seen/', {
+          method: "POST",
+          headers: {
+              "Content-Type": "application/json",
+              "X-CSRFToken": csrftoken
+          },
+          body: JSON.stringify({ notification_ids: allNotifications })
+      })
+      .then(response => response.json())
+      .then(data => {
+          if (data.status === "success") {
+              allNotifications.forEach(id => {
+                  const notificationElement = document.querySelector(`[data-id="${id}"]`);
+                  if (notificationElement) {
+                      notificationElement.remove(); // Remove or visually update the notification
+                  }
+              });
+
+              updateNotificationBadge(allNotifications.length);
+          }
+      })
+      .catch(error => console.error("Error:", error));
+  } else {
+      showError("No notifications to mark as seen.");
+  }
+});
+
+// Helper function to update the notification badge count
+function updateNotificationBadge(count) {
+  const badge = document.querySelector('.notiBadge');
+  if (badge) {
+      let currentCount = parseInt(badge.textContent, 10) || 0;
+      badge.textContent = Math.max(0, currentCount - count);
+      if (currentCount - count <= 0) {
+          badge.style.display = 'none';
+      }
+  }
+}
+
+// Helper function to show error message
+function showError(message) {
+  const notierror = document.getElementById("notierror");
+  notierror.textContent = message;
+}
+
+// =====================================Notification===============================================//
+
+
 const uncollapseli = document.getElementById("uncollapseli")
 const collapseli = document.getElementById("collapseli")
 const sidebar = document.getElementById("sidebar")
@@ -263,7 +354,7 @@ function populateTeamsForm(players) {
                 </div>
                 <div class="mt-3" style="width: 45%;">
                     <label class="allLbl">Players</label>
-                    <select class="allinput team-player-select" data-team-id="${i}" multiple onchange="handlePlayerSelection(event)">
+                    <select class="allinput team-player-select" data-team-id="${i}" multiple  onchange="handlePlayerSelection(event)">
                         <option value="" disabled>Select players</option>
                         ${createPlayerOptions(players)}
                     </select>
@@ -304,46 +395,55 @@ function updatePlayerOptions() {
 let teams = [];
 
 teamsContinue && teamsContinue.addEventListener("click", () => {
-    const teamNames = document.querySelectorAll(".team-name");
-    const teamPlayerSelects = document.querySelectorAll(".team-player-select");
+  const teamNames = document.querySelectorAll(".team-name");
+  const teamPlayerSelects = document.querySelectorAll(".team-player-select");
 
-    let valid = true;
-    let errorMessage = "";
+  let valid = true;
+  let errorMessage = "";
 
-    teamNames.forEach((input, index) => {
-        const teamId = input.dataset.teamId;
-        const teamName = input.value.trim();
-        const selectedPlayersForTeam = Array.from(teamPlayerSelects[index].selectedOptions).map(option => option.value);
 
-        if (!teamName) {
-            valid = false;
-            errorMessage = `Team ${index + 1} name is missing.`;
-            return;
-        }
+  teamNames.forEach((input, index) => {
+      const teamId = input.dataset.teamId;
+      const teamName = input.value.trim();
+      const selectedPlayersForTeam = Array.from(teamPlayerSelects[index].selectedOptions).map(option => option.value);
 
-        if (selectedPlayersForTeam.length === 0) {
-            valid = false;
-            errorMessage = `Team ${index + 1} must have at least one player selected.`;
-            return;
-        }
+      if (!teamName) {
+          valid = false;
+          errorMessage = `Team ${index + 1} name is missing.`;
+          return;
+      }
 
-        teams.push({
-            id: teamId,
-            name: teamName,
-            players: selectedPlayersForTeam,  
-        });
-    });
+      if (selectedPlayersForTeam.length === 0) {
+          valid = false;
+          errorMessage = `Team ${index + 1} must have at least one player selected.`;
+          return;
+      }
 
-    if (!valid) {
-        alert(errorMessage);
-    } else {
-        console.log("Teams created with selected players:", teams);
-        alert("Teams added successfully.");
-        teamsForm.style.display="none"
-        gameform.style.display="block"
-        
-    }
+      const teamPlayersWithHeadsets = selectedPlayersForTeam.map(playerName => {
+          const player = players.find(p => p.name === playerName);
+          return {
+              playerName: player.name,
+              headsetSerialNo: player.headset.serialNo,
+          };
+      });
+
+      teams.push({
+          id: teamId,
+          name: teamName,
+          players: teamPlayersWithHeadsets,
+      });
+  });
+
+  if (!valid) {
+      alert(errorMessage);
+  } else {
+      console.log("Teams created with selected players and headsets:", teams);
+      alert("Teams added successfully.");
+      teamsForm.style.display = "none";
+      gameform.style.display = "block";
+  }
 });
+
 
 playerContinue.addEventListener("click", () => {
     if (players.length >= 2) {
@@ -369,9 +469,9 @@ gameContinue && gameContinue.addEventListener("click", () => {
       game: selectedGame,
       teams: teams.map(team => ({
           teamName: team.name,
-          players: players.map(player => ({
-              name: player.name,
-              headsets: player.headset.serialNo,
+          players: team.players.map(player => ({
+              playerName: player.playerName,
+              headsetSerialNo: player.headsetSerialNo,
           })),
       })),
   };
@@ -381,6 +481,7 @@ gameContinue && gameContinue.addEventListener("click", () => {
 
   // You can now send `finalData` to your server or process it further
 });
+
 
 document.addEventListener("DOMContentLoaded", function () {
   const cardImages = document.querySelectorAll('.card .card-img-top');
@@ -408,7 +509,7 @@ const games = document.getElementById("games")
 
 function handleformpage(){
   games.style.display="none"
-  playerform.style.display="block"
+  playerForm.style.display="block"
 
 
 }

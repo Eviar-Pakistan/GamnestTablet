@@ -16,12 +16,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from myapp.views import login,index,games,room,headset,support,setting
+from myapp.views import login,index,games,room,headset,support,setting,mark_notifications_seen
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',login,name='login'),
     path('index',index,name="index"),
+    path('mark-selected-notifications-seen/', mark_notifications_seen, name='mark_notifications_seen'),
     path('games',games,name='games'),
     path('room',room,name="room"),
     path('headset',headset,name="headset"),

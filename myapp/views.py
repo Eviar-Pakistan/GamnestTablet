@@ -7,6 +7,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.core.paginator import Paginator
 from django.utils import timezone
 import requests
+from myapp.models import TicketNotification
 from django.core.paginator import Paginator
 
 def login(request):
@@ -45,9 +46,56 @@ def login(request):
     # Render login page for GET request
     return render(request, 'login.html')
 
+@login_required(login_url='/')
+def mark_notifications_seen(request):
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)  # Parse JSON data
+            notification_ids = data.get("notification_ids", [])  # Get IDs from request
 
+            if not notification_ids:
+                # If no notification IDs are provided, mark all unseen notifications as seen
+                notification_ids = TicketNotification.objects.filter(user=request.user, is_seen=False).values_list('id', flat=True)
+
+            # Update notifications to `is_seen=True`
+            TicketNotification.objects.filter(user=request.user, id__in=notification_ids).update(is_seen=True)
+            return JsonResponse({"status": "success"})
+        except Exception as e:
+            return JsonResponse({"status": "error", "message": str(e)}, status=400)
+    return JsonResponse({"status": "error"}, status=400)
 
 def index(request):
+
+    url = "http://gamenest.se/api/tickets/"
+ 
+    tabletserialNo = request.session['tablet_serial_no'] 
+    try:
+        response = requests.get(url)
+        if response.status_code == 200:
+            support_ticket_data = response.json()
+            print(support_ticket_data)
+            for ticket in support_ticket_data:
+                # Check if the ticket already exists for the tablet
+                if not TicketNotification.objects.filter(ticket_id=ticket['id'],tabletserialNo=tabletserialNo).exists():
+                    # Create or update notification
+                    TicketNotification.objects.update_or_create(
+                        tabletserialNo=tabletserialNo,
+                        ticket_id=ticket['id'],
+                        defaults={'created_at': ticket.get('created_at')}
+                    )
+                
+            # Filter unseen notifications
+            unseen_notifications = TicketNotification.objects.filter(tabletserialNo=tabletserialNo, is_seen=False).count()
+            notifications = TicketNotification.objects.filter(tabletserialNo=tabletserialNo, is_seen=False)
+            print(unseen_notifications)
+            print(notifications)
+        else:
+            print(f"Failed to fetch tickets data. Status code: {response.status_code}")
+            unseen_notifications = 0
+
+    except requests.RequestException as e:
+        print(f"Error connecting to the support tickets API: {e}")
+
     tablet_serial_no = request.session.get('tablet_serial_no')
     tablet_api_url = "http://127.0.0.1:8000/api/Tablets"
     tablet_response = requests.get(tablet_api_url)
@@ -67,7 +115,7 @@ def index(request):
     # Filter rooms based on the tablet's room
     filtered_headsets = [headset for headset in headsets if headset['room'] == tablet['room']]
    
-    return render(request, 'index.html',{'headsets':filtered_headsets,'games':games_data})
+    return render(request, 'index.html',{'headsets':filtered_headsets,'games':games_data , 'unseen_notifications':unseen_notifications,"notifications":notifications})
 
 def games(request):
     try:
