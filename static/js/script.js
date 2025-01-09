@@ -1,3 +1,4 @@
+
 // ==============================Password Toggle===========================================//
 
 function togglePasswordVisibility() {
@@ -142,7 +143,7 @@ all_seen && all_seen.addEventListener('click', function () {
       .map(checkbox => checkbox.value); // Collect IDs of all notifications
 
   if (allNotifications.length > 0) {
-      fetch('/mark-selected-notifications-seen/', {
+      fetch('mark-selected-notifications-seen', {
           method: "POST",
           headers: {
               "Content-Type": "application/json",
@@ -150,7 +151,12 @@ all_seen && all_seen.addEventListener('click', function () {
           },
           body: JSON.stringify({ notification_ids: allNotifications })
       })
-      .then(response => response.json())
+      .then(response => {
+        if (!response.ok) {
+            return response.json().then(data => { throw new Error(data.message); });
+        }
+        return response.json();
+    })
       .then(data => {
           if (data.status === "success") {
               allNotifications.forEach(id => {
@@ -258,7 +264,9 @@ function handleHeadsetSelection(event) {
   const playerSelect = document.querySelector(`select[data-player-id="${playerId}"]`);
 
   if (selectedHeadsets.has(headsetValue)) {
-      alert("This headset is already assigned to another player. Please choose a unique headset.");
+    const erromodal = new bootstrap.Modal(document.getElementById('ticketerrorModal'));
+    erromodal.show();
+    document.getElementById('ticketerror').textContent ="This headset is already assigned to another player. Please choose a unique headset.";
       event.target.value = "default"; 
       return;
   }
@@ -282,52 +290,52 @@ let players = [];
 
 
 playerContinue && playerContinue.addEventListener("click", () => {
-    const playerNames = document.querySelectorAll(".player-name");
-    const headsetSelects = document.querySelectorAll(".headset-select");
+  const playerNames = document.querySelectorAll(".player-name");
+  const headsetSelects = document.querySelectorAll(".headset-select");
 
-    let valid = true;
-    let errorMessage = "";
+  let valid = true;
+  let errorMessage = "";
 
-    playerNames.forEach((input, index) => {
-        const playerId = input.dataset.playerId;
-        const playerName = input.value.trim();
-        const headsetSelect = document.querySelector(`#headset-${playerId}`);
-        const headsetValue = headsetSelect.value;
-        const headsetName = headsetSelect.options[headsetSelect.selectedIndex]?.text;
+  playerNames.forEach((input, index) => {
+      const playerId = input.dataset.playerId;
+      const playerName = input.value.trim();
+      const headsetSelect = document.querySelector(`#headset-${playerId}`);
+      const headsetValue = headsetSelect.value;
+      const headsetName = headsetSelect.options[headsetSelect.selectedIndex]?.text;
 
-        if (!playerName) {
-            valid = false;
-            errorMessage = `Player ${index + 1} name is missing.`;
-            return;
-        }
+      if (!playerName || headsetValue === "default") {
+          valid = false;
+          if (!playerName) {
+              errorMessage = `Player ${index + 1} name is missing.`;
+          } else if (headsetValue === "default") {
+              errorMessage = `Player ${index + 1} has not selected a headset.`;
+          }
+          return;
+      }
 
-        if (headsetValue === "default") {
-            valid = false;
-            errorMessage = `Player ${index + 1} has not selected a headset.`;
-            return;
-        }
+      players.push({
+          id: playerId,
+          name: playerName,
+          headset: { serialNo: headsetValue, name: headsetName },
+      });
+  });
 
-        players.push({
-            id: playerId,
-            name: playerName,
-            headset: { serialNo: headsetValue, name: headsetName },
-        });
-        
-    });
-
-    if (!valid) {
-        alert(errorMessage);
-    }
-    else if(players.length < 2){
-      alert("Atleast two players are required")
-    }
-    else {
-        console.log("Players with unique headsets:", players);
-        alert("Players added successfully.");
-        playerForm.style.display = "none";
-    teamsForm.style.display = "block";
-    }
+  if (!valid) {
+      const erromodal = new bootstrap.Modal(document.getElementById('ticketerrorModal'));
+      erromodal.show();
+      document.getElementById('ticketerror').textContent = errorMessage;
+  } else if (players.length < 2) {
+      const erromodal = new bootstrap.Modal(document.getElementById('ticketerrorModal'));
+      erromodal.show();
+      document.getElementById('ticketerror').textContent = "At least two players are required.";
+  } else if(valid) {
+      console.log("Players with unique headsets:", players);
+      alert("Players added successfully.");
+      playerForm.style.display = "none";
+      teamsForm.style.display = "block";
+  }
 });
+
 
 const teamData = document.getElementById("teamdata");
 const teamsContinue = document.getElementById("teamscontinue");
@@ -455,9 +463,29 @@ playerContinue && playerContinue.addEventListener("click", () => {
 
 const gameContinue = document.getElementById("gamecontinue")
 
+const socket = new WebSocket('ws://localhost:8001/ws/some_endpoint/');
+
+socket.onopen = function(event) {
+    console.log('WebSocket connection established');
+};
+
+socket.onmessage = function(event) {
+    const data = JSON.parse(event.data);
+    console.log('Message from server:', data);
+};
+
+socket.onerror = function(event) {
+    console.error('WebSocket error observed:', event);
+};
+
+socket.onclose = function(event) {
+    console.log('WebSocket connection closed:', event);
+};
+
+
 gameContinue && gameContinue.addEventListener("click", () => {
   const selectedGameElement = document.getElementById("selectedgames");
-  selectedGame = selectedGameElement.value;
+  const selectedGame = selectedGameElement.value;
 
   if (selectedGame === "default") {
       alert("Please select a game.");
@@ -479,7 +507,14 @@ gameContinue && gameContinue.addEventListener("click", () => {
   console.log("Final Data:", finalData);
   alert("Game Started!");
 
-  // You can now send `finalData` to your server or process it further
+  // Send `finalData` through WebSocket
+  if (socket.readyState === WebSocket.OPEN) {
+      socket.send(JSON.stringify(finalData));
+      console.log("Final Data sent to server:", finalData);
+  } else {
+      console.error("WebSocket is not open. Unable to send data.");
+      alert("Connection to the server is not established. Please try again later.");
+  }
 });
 
 

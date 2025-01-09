@@ -25,7 +25,7 @@
                     <nav class="navbar navbar-expand-md headerNav">
                         <div class="container-fluid">
                             
-                            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                            <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse"
                                 data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
                                 aria-label="Toggle navigation">
                                 <i class="fas fa-bars" style="color: #fff;"></i>
@@ -336,6 +336,32 @@
     <!-- Main Content -->
 
     <main class="main">
+
+        <div class="modal fade" id="ticketsuccessModal" tabindex="-1" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-body p-3">
+                        <center><img src="{% static 'assets/checked.png' %}" alt="Success Icon" /></center>
+                        <h1 id="ticketsuccess" class="success-text" style="color:#32ba7c;text-align:center;padding-top:10px;font-size:24px;">
+                          
+                        </h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="modal fade" id="ticketerrorModal" tabindex="-1" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-body p-3">
+                        <center><img src="{% static 'assets/mark.png' %}" alt="Success Icon" /></center>
+                        <h1 id="ticketerror" class="error-text" style="text-align:center;padding-top:10px;font-size:24px;">
+                          
+                        </h1>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <div class="d-flex justify-content-center align-items-center h-100">
             <div class="row">

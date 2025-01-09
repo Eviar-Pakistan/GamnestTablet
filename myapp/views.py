@@ -46,23 +46,37 @@ def login(request):
     # Render login page for GET request
     return render(request, 'login.html')
 
-@login_required(login_url='/')
+from django.db.models import Q
+from django.http import JsonResponse
+import json
+
 def mark_notifications_seen(request):
     if request.method == "POST":
         try:
             data = json.loads(request.body)  # Parse JSON data
             notification_ids = data.get("notification_ids", [])  # Get IDs from request
 
+            # If no notification IDs are provided, mark all unseen notifications for the specific `tabletserialNo`
             if not notification_ids:
-                # If no notification IDs are provided, mark all unseen notifications as seen
-                notification_ids = TicketNotification.objects.filter(user=request.user, is_seen=False).values_list('id', flat=True)
+                tablet_serial_no = request.user.tabletserialNo  # Assuming `tabletserialNo` is used for identification
+                unseen_notifications = TicketNotification.objects.filter(
+                    Q(tabletserialNo=tablet_serial_no) & Q(is_seen=False)
+                )
+
+                notification_ids = [notification.id for notification in unseen_notifications]
+
+            print("Notification IDs to mark as seen:", notification_ids)  # Debugging
 
             # Update notifications to `is_seen=True`
-            TicketNotification.objects.filter(user=request.user, id__in=notification_ids).update(is_seen=True)
+            TicketNotification.objects.filter(id__in=notification_ids).update(is_seen=True)
             return JsonResponse({"status": "success"})
         except Exception as e:
+            print("Error:", e)  # Debugging
             return JsonResponse({"status": "error", "message": str(e)}, status=400)
     return JsonResponse({"status": "error"}, status=400)
+
+
+
 
 def index(request):
 
@@ -73,7 +87,6 @@ def index(request):
         response = requests.get(url)
         if response.status_code == 200:
             support_ticket_data = response.json()
-            print(support_ticket_data)
             for ticket in support_ticket_data:
                 # Check if the ticket already exists for the tablet
                 if not TicketNotification.objects.filter(ticket_id=ticket['id'],tabletserialNo=tabletserialNo).exists():
