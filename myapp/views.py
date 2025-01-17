@@ -80,7 +80,7 @@ def mark_notifications_seen(request):
 
 def index(request):
 
-    url = "http://gamenest.se/api/tickets/"
+    url = "https://gamenest.se/api/tickets/"
  
     tabletserialNo = request.session['tablet_serial_no'] 
     try:
@@ -129,7 +129,7 @@ def index(request):
     return render(request, 'index.html',{'headsets':filtered_headsets,'games':games_data , 'unseen_notifications':unseen_notifications,"notifications":notifications})
 
 def games(request):
-    url = "http://gamenest.se/api/tickets/"
+    url = "https://gamenest.se/api/tickets/"
  
     tabletserialNo = request.session['tablet_serial_no'] 
     try:
@@ -172,7 +172,7 @@ def games(request):
 
 def room(request):
 
-    url = "http://gamenest.se/api/tickets/"
+    url = "https://gamenest.se/api/tickets/"
  
     tabletserialNo = request.session['tablet_serial_no'] 
     try:
@@ -228,7 +228,7 @@ def room(request):
     return render(request, 'room.html', {"rooms": filtered_rooms, "tablet_serial_no": tablet_serial_no,'unseen_notifications':unseen_notifications,'notifications':notifications})
 
 def headset(request):
-    url = "http://gamenest.se/api/tickets/"
+    url = "https://gamenest.se/api/tickets/"
  
     tabletserialNo = request.session['tablet_serial_no'] 
     try:
@@ -274,7 +274,7 @@ def headset(request):
 
 def support(request):
 
-    url = "http://gamenest.se/api/tickets/"
+    url = "https://gamenest.se/api/tickets/"
  
     tabletserialNo = request.session['tablet_serial_no'] 
     try:
@@ -302,7 +302,7 @@ def support(request):
     except requests.RequestException as e:
         print(f"Error connecting to the support tickets API: {e}")
 
-    url = "http://gamenest.se/api/tickets/"
+    url = "https://gamenest.se/api/tickets/"
 
     today_tickets = []
     ongoing_tickets = []
@@ -368,7 +368,7 @@ def support(request):
 
 def setting(request):
 
-    url = "http://gamenest.se/api/tickets/"
+    url = "https://gamenest.se/api/tickets/"
  
     tabletserialNo = request.session['tablet_serial_no'] 
     try:
