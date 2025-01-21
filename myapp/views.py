@@ -22,19 +22,21 @@ def login(request):
                 return JsonResponse({"success": False, "message": "Serial No and Password are required"})
 
             # Call the external API
-            api_url = "http://127.0.0.1:8000/api/Tablets"
+            api_url = "https://dashboard.gamenest.se/api/Tablets"
             response = requests.get(api_url)
             if response.status_code != 200:
                 return JsonResponse({"success": False, "message": "Failed to fetch tablet data"})
 
             tablets = response.json()
+            
             for tablet in tablets:
                 if tablet.get('serialNo') == serial_no and tablet.get('password') == password:
                     # Store the serial number in the session on successful login
                     request.session['tablet_serial_no'] = serial_no
-
+                    venue = tablet.get('venue')
+                    room = tablet.get('room')
                     # Login success
-                    return JsonResponse({"success": True, "message": "Login successful"})
+                    return JsonResponse({"success": True, "message": "Login successful", "venue": venue,"room": room})
 
             # If no match is found
             return JsonResponse({"success": False, "message": "Invalid Serial No or Password"})
@@ -108,16 +110,16 @@ def index(request):
         print(f"Error connecting to the support tickets API: {e}")
 
     tablet_serial_no = request.session.get('tablet_serial_no')
-    tablet_api_url = "http://127.0.0.1:8000/api/Tablets"
+    tablet_api_url = "https://dashboard.gamenest.se/api/Tablets"
     tablet_response = requests.get(tablet_api_url)
     tablets = tablet_response.json()
     tablet = next((t for t in tablets if t['serialNo'] == tablet_serial_no), None)
 
-    headset_api_url = "http://127.0.0.1:8000/api/Headsets"
+    headset_api_url = "https://dashboard.gamenest.se/api/Headsets"
     headsets_response = requests.get(headset_api_url)
     headsets = headsets_response.json()
 
-    response = requests.get('http://127.0.0.1:8000/api/Games')
+    response = requests.get('https://dashboard.gamenest.se/api/Games')
     if response.status_code == 200:
         games_data = response.json()
     else:
@@ -158,7 +160,8 @@ def games(request):
         print(f"Error connecting to the support tickets API: {e}")
     try:
         # Fetch data from the API
-        response = requests.get('http://127.0.0.1:8000/api/Games')
+        response = requests.get('https://dashboard.gamenest.se/api/Games')
+        print(response.json())
         if response.status_code == 200:
             games_data = response.json()
         else:
@@ -206,7 +209,7 @@ def room(request):
 
     # if not tablet_serial_no:
     #     return render(request, 'error.html', {"message": "Tablet serial number not found. Please log in again."})
-    tablet_api_url = "http://127.0.0.1:8000/api/Tablets"
+    tablet_api_url = "https://dashboard.gamenest.se/api/Tablets"
     tablet_response = requests.get(tablet_api_url)
     
     # if tablet_response.status_code != 200:
@@ -217,10 +220,10 @@ def room(request):
 
     # if not tablet:
     #     return render(request, 'error.html', {"message": "Tablet not found in the system."})
-    rooms_api_url = "http://127.0.0.1:8000/api/Rooms"
+    rooms_api_url = "https://dashboard.gamenest.se/api/Rooms"
     rooms_response = requests.get(rooms_api_url)
     rooms = rooms_response.json()
-
+    print(rooms)
     # Filter rooms based on the tablet's room
     filtered_rooms = [room for room in rooms if room['id'] == tablet['room']]
 
@@ -229,10 +232,12 @@ def room(request):
 
 def headset(request):
     url = "https://gamenest.se/api/tickets/"
+    # wsurl = "ws://3.92.227.226:3000"
  
     tabletserialNo = request.session['tablet_serial_no'] 
     try:
         response = requests.get(url)
+        # wsresponse = request.get(wsurl)
         if response.status_code == 200:
             support_ticket_data = response.json()
             print(support_ticket_data)
@@ -256,12 +261,12 @@ def headset(request):
     except requests.RequestException as e:
         print(f"Error connecting to the support tickets API: {e}")    
     tablet_serial_no = request.session.get('tablet_serial_no')
-    tablet_api_url = "http://127.0.0.1:8000/api/Tablets"
+    tablet_api_url = "https://dashboard.gamenest.se/api/Tablets"
     tablet_response = requests.get(tablet_api_url)
     tablets = tablet_response.json()
     tablet = next((t for t in tablets if t['serialNo'] == tablet_serial_no), None)
 
-    headset_api_url = "http://127.0.0.1:8000/api/Headsets"
+    headset_api_url = "https://dashboard.gamenest.se/api/Headsets"
     headsets_response = requests.get(headset_api_url)
     headsets = headsets_response.json()
 

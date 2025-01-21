@@ -337,9 +337,8 @@
 
         <div id="headsets" class="row align-items-center justify-content-between">
             {% for headset in headsets %}
-                <!-- Each headset card will take 3 columns on large screens (4 items per row) -->
                 <div class="col-lg-4 col-md-6 col-sm-6 col-12">
-                    <div class="roomcard" style="width: 15rem;">
+                    <div class="roomcard" data-serial-no="{{ headset.serialNo }}" style="width: 15rem;">
                         <img src="{% static 'assets/pngegg 1.png' %}" class="card-img-top" style="border-radius: 8px 8px 0 0;" alt="...">
                         <div class="card-content" style="display: block; padding: 20px;">
                             <div class="d-flex justify-content-between align-items-center">
@@ -353,7 +352,7 @@
                                     </svg>
                                     Headset Battery
                                 </div>
-                                <div>100%</div>
+                                <div class="headset-battery">100%</div>
                             </div>
                             <div style="font-size:10px" class="d-flex justify-content-between align-items-center">
                                 <div>
@@ -362,13 +361,14 @@
                                     </svg>
                                     Controllers Battery
                                 </div>
-                                <div>100%</div>
+                                <div class="controllers-battery">100%</div>
                             </div>
                         </div>
                     </div>
                 </div>
             {% endfor %}
         </div>
+        
         
         
 

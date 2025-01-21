@@ -70,6 +70,27 @@ LoginForm && LoginForm.addEventListener("submit", (e) => {
     .then(data => {
       if (data.success) {
         localStorage.setItem("serialNo", serialNo);
+        const { venue, room } = data;
+
+        const socket = new WebSocket(`ws://3.92.227.226:3000/${venue}-${room}`);
+
+    socket.onopen = () => {
+        console.log("WebSocket connection established for venue-room:", venue, room);
+
+    };
+
+    socket.onmessage = (message) => {
+        console.log("Message from server:", message.data);
+    };
+
+    socket.onerror = (error) => {
+        console.error("WebSocket error:", error);
+    };
+
+    socket.onclose = () => {
+        console.log("WebSocket connection closed");
+    };
+
         const successModalElement = document.getElementById('ticketsuccessModal');
         const successmodal = new bootstrap.Modal(successModalElement);
         successmodal.show();
@@ -463,7 +484,7 @@ playerContinue && playerContinue.addEventListener("click", () => {
 
 const gameContinue = document.getElementById("gamecontinue")
 
-const socket = new WebSocket('ws://localhost:8001/ws/some_endpoint/');
+const socket = new WebSocket('ws://3.92.227.226:3000');
 
 socket.onopen = function(event) {
     console.log('WebSocket connection established');
