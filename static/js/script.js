@@ -44,6 +44,62 @@ document.addEventListener("DOMContentLoaded", () => {
 
 const LoginForm = document.getElementById("LoginForm");
 const error = document.getElementById("error");
+let socket; // Global WebSocket connection
+
+function initializeWebSocket(venue, room) {
+  if (socket && socket.readyState === WebSocket.OPEN) {
+    console.log("WebSocket already connected.");
+    return;
+  }
+
+  socket = new WebSocket(`ws://3.92.227.226:3000/${venue}-${room}`);
+
+  socket.onopen = () => {
+    console.log(`WebSocket connection established for ${venue}-${room}`);
+  };
+
+  socket.onmessage = (message) => {
+    console.log("Message received:", message.data);
+
+    // Check if the message is a Blob
+    // if (message.data instanceof Blob) {
+    //   console.error("Received Blob data. Cannot parse as JSON.");
+    //   // Handle Blob data if necessary
+    //   return;
+    // }
+
+    // If it's a string, try to parse it
+    if (typeof message.data === 'string') {
+      try {
+        const receivedData = JSON.parse(message.data);
+        console.log("Parsed Message:", message.data);
+        alert(`New Update: ${receivedData.message || JSON.stringify(receivedData)}`);
+      } catch (err) {
+        console.error("Error parsing received message:", err);
+      }
+    } else {
+      console.error("Received unknown data type:", message.data);
+    }
+  };
+
+  socket.onerror = (error) => {
+    console.error("WebSocket error:", error);
+  };
+
+  socket.onclose = () => {
+    console.log("WebSocket connection closed. Reconnecting...");
+    setTimeout(() => initializeWebSocket(venue, room), 2000); // Auto-reconnect
+  };
+}
+// Check if already logged in and restore WebSocket connection
+window.addEventListener("load", () => {
+  const venue = localStorage.getItem("venue");
+  const room = localStorage.getItem("room");
+
+  if (venue && room) {
+    initializeWebSocket(venue, room);
+  }
+});
 
 LoginForm && LoginForm.addEventListener("submit", (e) => {
   e.preventDefault();
@@ -56,53 +112,33 @@ LoginForm && LoginForm.addEventListener("submit", (e) => {
     return;
   }
 
-  const data = { serialNo: serialNo, password: password };
-
   fetch('/', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       'X-CSRFToken': csrftoken
     },
-    body: JSON.stringify(data)
+    body: JSON.stringify({ serialNo, password })
   })
     .then(response => response.json())
     .then(data => {
       if (data.success) {
         localStorage.setItem("serialNo", serialNo);
-        const { venue, room } = data;
+        localStorage.setItem("venue", data.venue);
+        localStorage.setItem("room", data.room);
 
-        const socket = new WebSocket(`ws://3.92.227.226:3000/${venue}-${room}`);
-
-    socket.onopen = () => {
-        console.log("WebSocket connection established for venue-room:", venue, room);
-
-    };
-
-    socket.onmessage = (message) => {
-        console.log("Message from server:", message.data);
-    };
-
-    socket.onerror = (error) => {
-        console.error("WebSocket error:", error);
-    };
-
-    socket.onclose = () => {
-        console.log("WebSocket connection closed");
-    };
+        initializeWebSocket(data.venue, data.room);
 
         const successModalElement = document.getElementById('ticketsuccessModal');
         const successmodal = new bootstrap.Modal(successModalElement);
         successmodal.show();
         document.getElementById("ticketsuccess").textContent = data.message;
-        
+
         setTimeout(() => {
           successmodal.hide();
           window.location.href = "index";
         }, 500);
-
       } else {
-       
         const erromodal = new bootstrap.Modal(document.getElementById('ticketerrorModal'));
         erromodal.show();
         document.getElementById('ticketerror').textContent = data.message || "Invalid credentials";
@@ -482,61 +518,67 @@ playerContinue && playerContinue.addEventListener("click", () => {
     }
 });
 
-const gameContinue = document.getElementById("gamecontinue")
+const venue = localStorage.getItem("venue")
+const room = localStorage.getItem("room")
 
-const socket = new WebSocket('ws://3.92.227.226:3000');
-
-socket.onopen = function(event) {
-    console.log('WebSocket connection established');
-};
-
-socket.onmessage = function(event) {
-    const data = JSON.parse(event.data);
-    console.log('Message from server:', data);
-};
-
-socket.onerror = function(event) {
-    console.error('WebSocket error observed:', event);
-};
-
-socket.onclose = function(event) {
-    console.log('WebSocket connection closed:', event);
-};
-
+const gameContinue = document.getElementById("gamecontinue");
 
 gameContinue && gameContinue.addEventListener("click", () => {
   const selectedGameElement = document.getElementById("selectedgames");
   const selectedGame = selectedGameElement.value;
 
+  // Check if a game is selected
   if (selectedGame === "default") {
-      alert("Please select a game.");
-      return;
+    alert("Please select a game.");
+    return;
   }
 
-  // Combine teams and selected game data into the final object
+  // Check if teams are defined and valid
+  if (!Array.isArray(teams) || teams.length === 0) {
+    alert("No teams available. Please set up teams before starting the game.");
+    return;
+  }
+
+  // Prepare the final data to be sent
   const finalData = {
-      game: selectedGame,
-      teams: teams.map(team => ({
-          teamName: team.name,
-          players: team.players.map(player => ({
-              playerName: player.playerName,
-              headsetSerialNo: player.headsetSerialNo,
-          })),
+    game: selectedGame,
+    teams: teams.map(team => ({
+      teamName: team.name,
+      players: team.players.map(player => ({
+        playerName: player.playerName,
+        headsetSerialNo: player.headsetSerialNo,
       })),
+    })),
   };
 
   console.log("Final Data:", finalData);
-  alert("Game Started!");
+  alert("Game is starting! Please wait...");
 
-  // Send `finalData` through WebSocket
-  if (socket.readyState === WebSocket.OPEN) {
+  // Check if the WebSocket is open before sending data
+  if (socket && socket.readyState === WebSocket.OPEN) {
+    try {
+      // Send the final data as a JSON string
       socket.send(JSON.stringify(finalData));
       console.log("Final Data sent to server:", finalData);
+    } catch (error) {
+      console.error("Error sending data:", error);
+      alert("An error occurred while sending data. Please try again.");
+    }
   } else {
-      console.error("WebSocket is not open. Unable to send data.");
-      alert("Connection to the server is not established. Please try again later.");
+    console.error("WebSocket is not open. Unable to send data.");
+    alert("Connection to the server is not established. Please try again later.");
   }
 });
+// Logout function (close WebSocket)
+function logout() {
+  localStorage.removeItem("serialNo");
+  localStorage.removeItem("venue");
+  localStorage.removeItem("room");
+  if (socket) {
+    socket.close();
+  }
+  window.location.href = "login.html";
+}
 
 
 document.addEventListener("DOMContentLoaded", function () {
