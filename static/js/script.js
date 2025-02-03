@@ -58,38 +58,37 @@ function initializeWebSocket(venue, room) {
     console.log(`WebSocket connection established for ${venue}-${room}`);
   };
 
-  socket.onmessage = (message) => {
+socket.onmessage = (message) => {
     console.log("Message received:", message.data);
 
-    // Check if the message is a Blob
-    // if (message.data instanceof Blob) {
-    //   console.error("Received Blob data. Cannot parse as JSON.");
-    //   // Handle Blob data if necessary
-    //   return;
-    // }
-
-    // If it's a string, try to parse it
     if (typeof message.data === 'string') {
-      try {
-        const receivedData = JSON.parse(message.data);
-        console.log("Parsed Message:", message.data);
-        alert(`New Update: ${receivedData.message || JSON.stringify(receivedData)}`);
-      } catch (err) {
-        console.error("Error parsing received message:", err);
-      }
+        try {
+            const receivedData = JSON.parse(message.data);
+            console.log("Parsed Message:", receivedData);
+
+            // Check if required fields exist
+            if (receivedData.serialNo && receivedData.battery) {
+                // Find the correct headset div using data-serial-no attribute
+                const headsetCard = document.querySelector(`.roomcard[data-serial-no="${receivedData.serialNo}"]`);
+                
+                if (headsetCard) {
+                    // Update the battery percentage inside the headset card
+                    const batteryElement = headsetCard.querySelector('.headset-battery');
+                    if (batteryElement) {
+                        batteryElement.textContent = receivedData.battery + "%";
+                    }
+                } else {
+                    console.warn("No headset found with serial:", receivedData.serialNo);
+                }
+            }
+        } catch (err) {
+            console.error("Error parsing received message:", err);
+        }
     } else {
-      console.error("Received unknown data type:", message.data);
+        console.error("Received unknown data type:", message.data);
     }
-  };
+};
 
-  socket.onerror = (error) => {
-    console.error("WebSocket error:", error);
-  };
-
-  socket.onclose = () => {
-    console.log("WebSocket connection closed. Reconnecting...");
-    setTimeout(() => initializeWebSocket(venue, room), 2000); // Auto-reconnect
-  };
 }
 // Check if already logged in and restore WebSocket connection
 window.addEventListener("load", () => {
