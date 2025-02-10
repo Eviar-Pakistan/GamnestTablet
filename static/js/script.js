@@ -351,46 +351,82 @@ playerContinue && playerContinue.addEventListener("click", () => {
 
   let valid = true;
   let errorMessage = "";
+  const playerNamesArray = [];
+  const headsetSerialsArray = [];  // Array to track used headset serial numbers
+
+  // Clear the players array to start fresh on each button click
+  players.length = 0;
 
   playerNames.forEach((input, index) => {
-      const playerId = input.dataset.playerId;
-      const playerName = input.value.trim();
-      const headsetSelect = document.querySelector(`#headset-${playerId}`);
-      const headsetValue = headsetSelect.value;
-      const headsetName = headsetSelect.options[headsetSelect.selectedIndex]?.text;
+    const playerId = input.dataset.playerId;
+    const playerName = input.value.trim();
+    const headsetSelect = document.querySelector(`#headset-${playerId}`);
+    const headsetValue = headsetSelect.value;
+    const headsetName = headsetSelect.options[headsetSelect.selectedIndex]?.text;
 
-      if (!playerName || headsetValue === "default") {
-          valid = false;
-          if (!playerName) {
-              errorMessage = `Player ${index + 1} name is missing.`;
-          } else if (headsetValue === "default") {
-              errorMessage = `Player ${index + 1} has not selected a headset.`;
-          }
-          return;
+    // Check if the player name is empty or the headset is not selected
+    if (!playerName || headsetValue === "default") {
+      valid = false;
+      if (!playerName) {
+        errorMessage = `Player ${index + 1} name is missing.`;
+      } else if (headsetValue === "default") {
+        errorMessage = `Player ${index + 1} has not selected a headset.`;
       }
+      return;
+    }
 
+    // Check for duplicate player names
+    if (playerNamesArray.includes(playerName)) {
+      valid = false;
+      errorMessage = `Player name "${playerName}" is already taken.`;
+      return;
+    }
+
+    // Check for duplicate headset assignments
+    if (headsetSerialsArray.includes(headsetValue)) {
+      valid = false;
+      errorMessage = `Headset "${headsetName}" is already assigned to another player.`;
+      return;
+    }
+
+    // Add player name to the array for checking duplicates
+    playerNamesArray.push(playerName);
+    // Add headset serial to the array for checking duplicates
+    headsetSerialsArray.push(headsetValue);
+
+    // Only push the player if all validations pass
+    if (valid) {
       players.push({
-          id: playerId,
-          name: playerName,
-          headset: { serialNo: headsetValue, name: headsetName },
+        id: playerId,
+        name: playerName,
+        headset: { serialNo: headsetValue, name: headsetName },
       });
+    }
   });
 
+  // Error handling
   if (!valid) {
-      const erromodal = new bootstrap.Modal(document.getElementById('ticketerrorModal'));
-      erromodal.show();
-      document.getElementById('ticketerror').textContent = errorMessage;
+    const erromodal = new bootstrap.Modal(document.getElementById('ticketerrorModal'));
+    erromodal.show();
+    document.getElementById('ticketerror').textContent = errorMessage;
   } else if (players.length < 2) {
-      const erromodal = new bootstrap.Modal(document.getElementById('ticketerrorModal'));
-      erromodal.show();
-      document.getElementById('ticketerror').textContent = "At least two players are required.";
-  } else if(valid) {
-      console.log("Players with unique headsets:", players);
-      alert("Players added successfully.");
-      playerForm.style.display = "none";
-      teamsForm.style.display = "block";
+    const erromodal = new bootstrap.Modal(document.getElementById('ticketerrorModal'));
+    erromodal.show();
+    document.getElementById('ticketerror').textContent = "At least two players are required.";
+  } else if (valid) {
+    console.log("Players with unique headsets:", players);
+    Swal.fire({
+      text: 'Player added successfully!',
+      background: '#212121', // Alert background color
+      color: 'white', // Text color
+      confirmButtonText: 'Ok', 
+      confirmButtonColor: '#956C04',
+    });
+    playerForm.style.display = "none";
+    teamsForm.style.display = "block";
   }
 });
+
 
 
 const teamData = document.getElementById("teamdata");
@@ -502,8 +538,14 @@ teamsContinue && teamsContinue.addEventListener("click", () => {
       alert(errorMessage);
   } else {
       console.log("Teams created with selected players and headsets:", teams);
-      alert("Teams added successfully.");
-      teamsForm.style.display = "none";
+      Swal.fire({
+        text: 'Team added successfully!',
+        background: '#212121', // Alert background color
+        color: 'white', // Text color
+        confirmButtonText: 'Ok', 
+        confirmButtonColor: '#956C04',
+      })     
+       teamsForm.style.display = "none";
       gameform.style.display = "block";
   }
 });
@@ -551,8 +593,17 @@ gameContinue && gameContinue.addEventListener("click", () => {
   };
 
   console.log("Final Data:", finalData);
-  alert("Game is starting! Please wait...");
-
+  Swal.fire({
+    text: 'Please press Proceed to start the game',
+    background: '#212121', // Alert background color
+    color: 'white', // Text color
+    confirmButtonText: 'Proceed', 
+    confirmButtonColor: '#956C04',
+  }).then((result) => {
+    if (result.isConfirmed) {
+      console.log("Game is starting...");
+    }
+  });
   // Check if the WebSocket is open before sending data
   if (socket && socket.readyState === WebSocket.OPEN) {
     try {
